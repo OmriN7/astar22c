@@ -11,12 +11,18 @@ Rough TO-DO List:
 - OMRI: The actual pathfinding algorithm 
 - The Presentation itself
 
+<br/>
+<br/>
+
 ### /// PROGRAM DESCRIPTION
 This program is meant to simulate the algorithm for which enemies at a tile-based RPG would use to find the shortest path towards the player to attack him. In order to visualize and help explain, the hypothetical game might look something like the following:
 
 <img src="http://68.media.tumblr.com/0e2c978943d029ba4a5355f65bea7290/tumblr_inline_nsqdo8bMn41rrropq_500.gif" />
 
 *The program will ask the user for an input file containing the appropriate data. If the input file is bad then the program will terminate (**FAWZAN**). However, if the data is fine then the program will then take the data, convert it from a string to a two-dimensional array and then to a graph (**VAUGHN & YANG**).  After that, the program will pass the graph to a pathfinding algorithm that will show the shortest path possible for the skeleton to walk to the player (**OMRI**).*
+
+<br/>
+<br/>
 
 ### /// PROGRAM INPUT FORMAT 
 So, how do we turn the game scene into something a java program would understand? Again, let's visualize...

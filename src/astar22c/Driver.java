@@ -39,7 +39,7 @@ public class Driver
 					else
 					{
 						char dataArray[][] = dataToArray(fileScanner);
-						//Convert to graph
+						PathFindingGraph pfg = twoDArrayToGraph(dataArray);
 						//Run pathfinding simulation
 						//Show the path that was found...
 					}
@@ -70,6 +70,10 @@ public class Driver
 
 	public static char[][] dataToArray(Scanner fileScanner)
 	{
+		//Program should check that the format of the data is OK! 
+		//If it's not then print that the format in the file is bad due to the reason
+		//and return null
+		
 		//? The way that you compute rows and columns implies we'll define the length
 		//of the table in the beginning which is incorrect...
 		
@@ -98,7 +102,7 @@ public class Driver
 		OPEN, WALL, START, TARGET
 	}
 	
-	public PathFindingGraph<TileData> twoDArrayToGraph(char[][] chars)
+	public static PathFindingGraph<TileData> twoDArrayToGraph(char[][] chars)
 	{
 		PathFindingGraph<TileData> myGraph = new PathFindingGraph<>();
 		boolean visited[][] = new boolean[chars.length][chars.clone()[0].length];
@@ -160,9 +164,11 @@ public class Driver
 	
 	public class TileData
 	{
+		//Instance Variables
 		public TileType type;
 		public int x, y;
 		
+		//Deafault Constructor
 		public TileData(TileType t, int x, int y)
 		{
 			type = t;

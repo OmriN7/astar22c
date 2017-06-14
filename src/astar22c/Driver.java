@@ -66,12 +66,17 @@ public class Driver
 		
 		return scanner;
 	} // end openInputFile
-	
-	//
+
+
 	public static char[][] dataToArray(Scanner fileScanner)
 	{
+		//? The way that you compute rows and columns implies we'll define the length
+		//of the table in the beginning which is incorrect...
+		
+		//https://stackoverflow.com/questions/18902706/java-scanner-count-lines-in-file
 	    int numRows = fileScanner.nextInt();
 	    int numColumns = fileScanner.nextInt();
+	    
 	    char[][] dataArray = new char[numRows][numColumns];
 
 	    for(int row = 0; row < numRows; row++)
@@ -85,6 +90,8 @@ public class Driver
 	    }
 	    return dataArray;
 	}
+	
+	
 	
 	public enum TileType
 	{

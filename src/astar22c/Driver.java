@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import astar22c.ArrayToGraph.TileData;
-
-public class Driver 
+public class Driver
 {
 	//Global Vars
 	public static Scanner userScanner = new Scanner(System.in);
@@ -16,8 +14,9 @@ public class Driver
 	{
 		String userInput = ""; //String to hold user input
 		Scanner fileScanner; //Scanner to scan through the input file
+		char dataArray[][];
 		
-		System.out.printf("Welcome to the pathfinding program!\n");
+		System.out.print("Welcome to the pathfinding program!\n");
 		
 		while(!userInput.equals("exit"))
 		{
@@ -26,24 +25,28 @@ public class Driver
 			{
 				case "help":
 					//Display the available commands...
+					//FAWZAN -- try to think of something helpful to print here
+					//when a user types "help"
 					break; 
 
 				case "exit":
-					System.out.printf("Exiting program...\n");
+					System.out.print("Exiting program...\n");
 					break; 
 				
 				default:
 					fileScanner = openInputFile(userInput);
 					if(fileScanner == null)
 					{
-						System.out.printf("File not found...\n\n");
+						System.out.print("File not found...\n\n");
 					}
 					else
 					{
-						char dataArray[][] = dataToArray(fileScanner);
-						PathFindingGraph<TileData> pfg = ArrayToGraph.twoDArrayToGraph(dataArray);
-						//Run pathfinding simulation
-						//Show the path that was found...
+						Graph<AStarVertex> dataGraph = fileToGraph(fileScanner);
+						if(dataGraph != null)
+						{
+							//Run pathfinding simulation
+							//Show the path that was found...
+						}
 					}
 					break;
 			}
@@ -70,30 +73,81 @@ public class Driver
 	} // end openInputFile
 
 
-	public static char[][] dataToArray(Scanner fileScanner)
+	public static Graph fileToGraph(Scanner fileScanner)
 	{
-		//Program should check that the format of the data is OK! 
-		//If it's not then print that the format in the file is bad due to the reason
-		//and return null
+		String nextLine = fileScanner.nextLine();
+		String dataString = nextLine;
+		int rowSize = 1;
+		int colSize = nextLine.length();
 		
-		//? The way that you compute rows and columns implies we'll define the length
-		//of the table in the beginning which is incorrect...
-		
-		//https://stackoverflow.com/questions/18902706/java-scanner-count-lines-in-file
-	    int numRows = fileScanner.nextInt();
-	    int numColumns = fileScanner.nextInt();
-	    
-	    char[][] dataArray = new char[numRows][numColumns];
+		while(fileScanner.hasNext())
+		{
+			nextLine = fileScanner.nextLine();
 
-	    for(int row = 0; row < numRows; row++)
+        	//VAUGHN! make sure that you check here if the characters that we're putting in are from the 4 characters that we've defined thus far
+			if(nextLine.length() != colSize)
+			{
+	    		System.out.print("Error! the file given has a formatting error.\n");
+	    		System.out.print("Please make sure that the every line has the same amount of characters!\n");
+				return null;
+			}
+			
+			dataString = dataString + nextLine;
+			rowSize++;
+		}
+		
+		
+		
+		
+		int dataArray[][] = new int[rowSize][colSize];
+		int indexCnt = 0;
+		
+		//Populate data array
+	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
 	    {
-	        String line = fileScanner.next();
-
-	        for(int column = 0; column < numColumns; column++)
-	        {
-	        	dataArray[row][column] = line.charAt(column);
-	        }
+	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
+	    	{
+	    		switch(dataString.charAt(rowCnt*colSize + colCnt) + "")
+	    		{
+		    		case "O": //Open
+		    		case "S": //Start
+		    		case "T": //Target
+		    			dataArray[rowCnt][colCnt] = indexCnt;
+		    			indexCnt++;
+		    			break;
+		    			
+		    		default: //Wall
+		    			dataArray[rowCnt][colCnt] = -1;
+		    			break;
+	    		}
+	    	}
 	    }
-	    return dataArray;
+	    
+	    
+	    
+	    
+	    
+	    Graph<AStarVertex> g = new Graph();
+	    
+	    //Loop through the array of ints and created the verticies
+	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
+	    {
+	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
+	    	{
+	    		if(dataArray[rowCnt][colCnt] != (-1)) // If it's not a wall
+	    		{
+	    			g.addToVertexSet(new AStarVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16))); //Create a vertex!
+	    			//Save the return values of this in a 2D array of references possibly? ask teacher
+	    		}
+	    	}
+	    }
+	    
+	    
+	    
+	    //FAWZAN
+	    //Loop through the array we've created of the references to the verticies
+	    //and connect them to each other using addToAdjList(reference, weight)
+	    
+	    return g; //Return to main! 
 	}
 }	

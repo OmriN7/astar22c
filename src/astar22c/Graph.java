@@ -13,8 +13,7 @@ interface Visitor<T>
 class Vertex<E>
 {
    public static final double INFINITY = Double.MAX_VALUE;
-   public HashMap<E, Pair<Vertex<E>, Double> > adjList
-      = new HashMap<E, Pair<Vertex<E>, Double> >();
+   public HashMap<E, Pair<Vertex<E>, Double> > adjList = new HashMap<E, Pair<Vertex<E>, Double> >();
    public E data;
    public boolean visited;
 
@@ -240,9 +239,10 @@ public class Graph<E>
    public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor)
    {
         // YOU COMPLETE THIS (USE THE RECURSIVE ALGORITHM GIVEN FOR LESSON 11 EXERCISE)
+	   // Yang, Vaughn and Fawzan -- Please complete this method
    }
 
-
+// Yang, Vaughn and Fawzan -- Please complete this method
 // WRITE THE INSTANCE METHOD HERE TO
    //         WRITE THE GRAPH's vertices and its
    //         adjacency list TO A TEXT FILE (SUGGEST TO PASS AN

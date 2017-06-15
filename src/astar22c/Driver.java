@@ -81,13 +81,14 @@ public class Driver
 		String dataString = nextLine;
 		int rowSize = 1;
 		int colSize = nextLine.length();
+		private static final Set<String> strings = new HashSet<String>(Arrays.asList(O, W, S, T));
 		
 		while(fileScanner.hasNext())
 		{
 			nextLine = fileScanner.nextLine();
 
         	//VAUGHN! make sure that you check here if the characters that we're putting in are from the 4 characters that we've defined thus far
-			if(nextLine.length() != colSize)
+			if(nextLine.length() != colSize || !strings.contains(dataString))
 			{
 	    		System.out.print("Error! the file given has a formatting error.\n");
 	    		System.out.print("Please make sure that the every line has the same amount of characters!\n");

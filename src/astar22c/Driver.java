@@ -44,8 +44,8 @@ public class Driver
 						Graph<AStarVertex> dataGraph = fileToGraph(fileScanner);
 						if(dataGraph != null)
 						{
-							//Run pathfinding simulation
-							//Show the path that was found...
+							//LinkedStack<AStarVertex> shortestPath = findShortestPath(Graph dataGraph, AStarVertex startVertex, AStarVertex, targetVertex)
+							//printShortestPath(Graph<AStarVertex> dataGraph, LinkedStack<AStarVertex> shortestPath)
 						}
 					}
 					break;
@@ -73,6 +73,8 @@ public class Driver
 	} // end openInputFile
 
 
+	//YANG -- after Vaughn and Fawzan are done w/ their tasks on this method...
+	//Try to split it up into about 4 methods to keep things clean!
 	public static Graph fileToGraph(Scanner fileScanner)
 	{
 		String nextLine = fileScanner.nextLine();

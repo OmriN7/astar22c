@@ -25,7 +25,7 @@ public class Driver
 			{
 				case "help":
 					//Display the available commands...
-					//FAWZAN -- try to think of something helpful to print here
+					//FAWZAN -- Explain how the program behvaves, what the commands are and how the input should be formatted.
 					//when a user types "help"
 					System.out.println("If you would like to start the program, enter a file name.");
 					System.out.println("If you would like to exit the program, enter exit.");
@@ -90,11 +90,16 @@ public class Driver
 			nextLine = fileScanner.nextLine();
 
         	//VAUGHN! make sure that you check here if the characters that we're putting in are from the 4 characters that we've defined thus far
-			if(nextLine.length() != colSize || !strings.contains(dataString))
+			if(nextLine.length() != colSize)
 			{
 	    		System.out.print("Error! the file given has a formatting error.\n");
 	    		System.out.print("Please make sure that the every line has the same amount of characters!\n");
 				return null;
+			}
+			else if(!strings.contains(dataString)) //I made the error be a bit specific to give the user more feedback. -- Omri
+			{
+	    		System.out.print("Error! Unkown characters detected.\n");
+	    		System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
 			}
 			
 			dataString = dataString + nextLine;

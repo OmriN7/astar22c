@@ -27,6 +27,8 @@ public class Driver
 					//Display the available commands...
 					//FAWZAN -- try to think of something helpful to print here
 					//when a user types "help"
+					System.out.println("If you would like to start the program, enter a file name.");
+					System.out.println("If you would like to exit the program, enter exit.");
 					break; 
 
 				case "exit":

@@ -2,7 +2,10 @@ package astar22c;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Driver
 {
@@ -83,7 +86,8 @@ public class Driver
 		String dataString = nextLine;
 		int rowSize = 1;
 		int colSize = nextLine.length();
-		private static final Set<String> strings = new HashSet<String>(Arrays.asList(O, W, S, T));
+		final Set<String> strings = new HashSet<String>(Arrays.asList("O", "W", "S", "T"));
+			
 		
 		while(fileScanner.hasNext())
 		{

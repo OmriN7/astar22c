@@ -152,6 +152,8 @@ public class Driver
 	    		{
 	    			g.addToVertexSet(new AStarVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16))); //Create a vertex!
 	    			//Save the return values of this in a 2D array of references possibly? ask teacher
+				//int arr[][] = new int[rowSize][colSize];
+				//arr[rowCnt][colCnt] = dataArray[rowCnt][colCnt];
 	    		}
 	    	}
 	    }

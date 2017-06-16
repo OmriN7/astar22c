@@ -1,7 +1,9 @@
 package astar22c;
 
-
 import java.util.*;
+
+import astar22c.ArrayToGraph.TileData;
+
 import java.text.*;
 
 
@@ -23,6 +25,16 @@ public class GraphTester
 	      myGraph1.addEdge("I", "N", 0);
 
 	      myGraph1.showAdjTable();
+	      
+	      Graph<TileData> newGraph = new  PathFindingGraph<>();
+	      char[][] chars = {{'W','O','O','O','O','W','W'},{
+	    		  'O','O','O','W','O','O','W'},{
+	    		  'O','S','O','W','O','T','O'},{
+	    		  'W','O','O','W','O','O','O'},{
+	    		  'W','O','O','O','O','O','W'}};
+	      newGraph = ArrayToGraph.twoDArrayToGraph(chars);
+	      
+	      newGraph.showAdjTable();
 
 
 

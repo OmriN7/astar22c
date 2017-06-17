@@ -7,8 +7,8 @@ import java.util.Iterator;
 public class AStarGraph<E> extends Graph
 {
 	//Instance Variables
-	private Vertex<E> startingPointVertex = null;
-	private Vertex<E> targetVertex = null;
+	private AStarVertex<E> startingPointVertex = null;
+	private AStarVertex<E> targetVertex = null;
 
 	//Default constructor
 	public AStarGraph()
@@ -52,7 +52,7 @@ public class AStarGraph<E> extends Graph
 	}
 	public LinkedQueue findShortestPath()
 	{
-		AStarVertex curVertex = (AStarVertex)startingPointVertex;
+		Vertex curVertex = startingPointVertex;
 		
 		double lowestScore = Double.MAX_VALUE;
 		double curScore;
@@ -77,19 +77,30 @@ public class AStarGraph<E> extends Graph
 	        while(pairIterator.hasNext()) 
 	        {
 	        	curPair = pairIterator.next();
-
 	        	tempEdge = (AStarVertex<Integer>) curPair.first; // Vertex address
-	        	tempWeight = ((Double) curPair.second).doubleValue(); // Weight to that vertex
 	        	
-	        	curScore = tempWeight + Math.sqrt(Math.pow(tempEdge.x,2) + Math.pow(tempEdge.y,2));
-	        	
-	        	if(curScore < lowestScore)
+	        	if(!tempEdge.isVisited())
 	        	{
-	        		lowestScore = curScore;
-	        		curPair = shorterPair;
-	        	}	
+		        	tempWeight = ((Double) curPair.second).doubleValue(); // Weight to that vertex
+		        	
+		        	double a = tempEdge.x-targetVertex.x;
+		        	double b = tempEdge.y-targetVertex.y;
+		        	
+		        	double q = tempEdge.x;
+		        	double w = tempEdge.y;
+		        	
+		        	curScore = tempWeight + Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+		        	
+		        	if(curScore < lowestScore)
+		        	{
+		        		lowestScore = curScore;
+		        		shorterPair = curPair;
+		        	}
+	        	}
 	        }
 	        
+	        curVertex.visit();
+	        curVertex = shorterPair.first;
 	        path.enqueue(shorterPair);
 	        lowestScore = Double.MAX_VALUE;
 		}

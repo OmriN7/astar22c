@@ -119,7 +119,7 @@ public class Driver
 				return null;
 			}
 			else if(!strings.contains(dataString)) //I made the error be a bit specific to give the user more feedback. -- Omri
-			{
+			{					//Perfect Thanks -Vaughn
 	    		System.out.print("Error! Unkown characters detected.\n");
 	    		System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
 			}

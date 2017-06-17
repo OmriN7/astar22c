@@ -1,8 +1,7 @@
 package astar22c;
 
-import java.io.*;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -19,8 +18,10 @@ public class Driver
 		String userInput = ""; //String to hold user input
 		Scanner fileScanner; //Scanner to scan through the input file
 		char dataArray[][];
-		
+
 		System.out.print("Welcome to the pathfinding program!\n");
+		System.out.print("Type \"help\" for help\n");
+		System.out.print("Please enter a filename...\n");
 		
 		while(!userInput.equals("exit"))
 		{
@@ -28,10 +29,26 @@ public class Driver
 			switch(userInput)
 			{
 				case "help":
-					System.out.println("Available commands are: help, enter a file, exit.");
-					System.out.println("If you enter help, this screen will be shown.");
-					System.out.println("If you enter exit, the program will terminate.");
-					System.out.println("If you enter anything else, the program will assume it is a file name, and will try to open it.");
+					//FAWZAN & OMRI
+					System.out.print("\n");
+					System.out.print("HELP\tProvides Help information for commands.\n");
+					System.out.print("EXIT\tyou would like to exit the program, enter exit.\n");
+					System.out.print("\n");
+					System.out.print("Any input that isn't a command would be considered as a filename that the program would try to open.\n");
+					System.out.print("Programs should be formatted as follows:\n");
+					System.out.print("1. Use ONLY the following characters:\n");
+					System.out.print("\t'O' - \"Open\" is for open verticies.\n");
+					System.out.print("\t'W' - \"Wall\"Open tiles.\n");
+					System.out.print("\t'S' - \"Start\" is for open verticies that are the end location of the path. Should only contain one of these characters.\n");
+					System.out.print("\t'T' - \"Target\" is for open verticies that are the starting location of the path. Should only contain one of these characters.\n");
+					System.out.print("2. Every line needs to have the same amount of characters. For example...\n");
+					System.out.print("\tWOOOOWW\n");
+					System.out.print("\tOOOWOOW\n");
+					System.out.print("\tOSOWOTO\n");
+					System.out.print("\tWOOWOOO\n");
+					System.out.print("\tWOOOOOW\n");
+					System.out.print("\n");
+					System.out.print("\n");
 					break; 
 
 				case "exit":
@@ -46,10 +63,10 @@ public class Driver
 					}
 					else
 					{
-						Graph<AStarVertex> dataGraph = fileToGraph(fileScanner);
+						AStarGraph<Integer> dataGraph = fileToGraph(fileScanner);
 						if(dataGraph != null)
 						{
-							//LinkedStack<AStarVertex> shortestPath = findShortestPath(Graph dataGraph, AStarVertex startVertex, AStarVertex, targetVertex)
+							dataGraph.findShortestPath();
 							//printShortestPath(Graph<AStarVertex> dataGraph, LinkedStack<AStarVertex> shortestPath)
 						}
 					}
@@ -76,29 +93,11 @@ public class Driver
 		
 		return scanner;
 	} // end openInputFile
-	
-	public static PrintWriter openOutputFile(String filename) 
-	{
-		FileOutputStream outFile=null;
-		   try {
-			   outFile = new FileOutputStream(filename);
-		   }catch( FileNotFoundException e )
-		   {
-		       System.err.println(e);
-		       return null;
-		   } //end catch
-	
-		   PrintWriter prtWriter = new PrintWriter(outFile, true);
-		   
-		   return prtWriter;
-	} // written by Yang
-	
-	
 
 
 	//YANG -- after Vaughn and Fawzan are done w/ their tasks on this method...
 	//Try to split it up into about 4 methods to keep things clean!
-	public static Graph fileToGraph(Scanner fileScanner)
+	public static AStarGraph fileToGraph(Scanner fileScanner)
 	{
 		String nextLine = fileScanner.nextLine();
 		String dataString = nextLine;
@@ -119,7 +118,7 @@ public class Driver
 				return null;
 			}
 			else if(!strings.contains(dataString)) //I made the error be a bit specific to give the user more feedback. -- Omri
-			{					//Perfect Thanks -Vaughn
+			{
 	    		System.out.print("Error! Unkown characters detected.\n");
 	    		System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
 			}
@@ -132,36 +131,46 @@ public class Driver
 		
 		
 		int dataArray[][] = new int[rowSize][colSize];
+		char curChar;
 		int indexCnt = 0;
+		
+		//index0 - x
+		//index1 - y
+		int startingVertexCoord[] = new int[2];
+		int targetVertexCoord[] = new int[2];
+		
 		
 		//Populate data array
 	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
 	    {
 	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
 	    	{
-	    		switch(dataString.charAt(rowCnt*colSize + colCnt) + "")
+	    		curChar = dataString.charAt((rowCnt*(rowSize+1))+colCnt);
+	    		if(curChar != 'W') //If the char isn't a wall vertex
 	    		{
-		    		case "O": //Open
-		    		case "S": //Start
-		    		case "T": //Target
-		    			dataArray[rowCnt][colCnt] = indexCnt;
-		    			indexCnt++;
-		    			break;
-		    			
-		    		default: //Wall
-		    			dataArray[rowCnt][colCnt] = -1;
-		    			break;
+	    			//Mark the key of the vertex
+	    			dataArray[rowCnt][colCnt] = indexCnt;
+	    			indexCnt++;
+	    			
+	    			//Keeps track of the coordinates of the start and target vertex
+	    			if(curChar == 'S')
+	    			{
+	    				startingVertexCoord[0] = colCnt; //x coord
+	    				startingVertexCoord[1] = rowCnt; //y coord
+	    			}
+	    			if(curChar == 'T')
+	    			{
+	    				targetVertexCoord[0] = colCnt; //x coord
+	    				targetVertexCoord[1] = rowCnt; //y coord
+	    			}
 	    		}
 	    	}
 	    }
 	    
 	    
 	    
-	    
-	    
-	    Graph<AStarVertex> g = new Graph();
-		
-	    Vertex<AStarVertex> arr[][] = new Vertex[rowSize][colSize];
+	    AStarGraph<Integer> g = new AStarGraph();
+	    AStarVertex<Integer>[][] vertexRefernces = new AStarVertex[rowSize][colSize];
 	    
 	    //Loop through the array of ints and created the verticies
 	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
@@ -170,24 +179,54 @@ public class Driver
 	    	{
 	    		if(dataArray[rowCnt][colCnt] != (-1)) // If it's not a wall
 	    		{
-	    			g.addToVertexSet(new AStarVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16))); //Create a vertex!
-	    			//Save the return values of this in a 2D array of references possibly? ask teacher
-				arr[rowCnt][colCnt] = g.addToVertexSet(new AStarVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16)));
+	    			vertexRefernces[rowCnt][colCnt] = g.addVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16)); //Create a vertex!
+	    		}
+	    		else
+	    		{
+	    			vertexRefernces[rowCnt][colCnt] = null;
 	    		}
 	    	}
 	    }
 	    
+	    //Set start and target nodes
+	    g.setStartingPointVertex(vertexRefernces[startingVertexCoord[0]][startingVertexCoord[1]]);
+	    g.setTargetVertex(vertexRefernces[targetVertexCoord[0]][targetVertexCoord[1]]);
 	    
 	    
-	    //FAWZAN
-	    //Loop through the array we've created of the references to the verticies
-	    //and connect them to each other using addToAdjList(reference, weight)
-		for(int rowCnt = 0; rowCnt < rowSize; rowCnt++) {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++) {
-	    		arr[0][0].addToAdjList(arr[rowCnt][colCnt], 1);
+	    
+	    
+	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
+	    {
+	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
+	    	{
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt, 1);
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt, 1);
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt-1, 1);
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt+1, 1);
 	    	}
 	    }
 	    
 	    return g; //Return to main! 
 	}
-}	
+	
+	public static void connectVerticies(AStarVertex vertexRefernces[][], int vert0x, int vert0y, int vert1x, int vert1y, double weight)
+	{
+		try
+		{
+			if(vertexRefernces[vert0x][vert0y] == null || vertexRefernces[vert1x][vert1y] == null)
+			{
+				return;
+			}
+			else
+			{
+				vertexRefernces[vert0x][vert0y].addToAdjList(vertexRefernces[vert1x][vert1y], weight);
+			}
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+		     //Do nothing.
+		}
+	}
+}
+
+

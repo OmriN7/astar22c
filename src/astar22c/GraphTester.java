@@ -27,11 +27,12 @@ public class GraphTester
 	      myGraph1.showAdjTable();
 	      
 	      Graph<TileData> newGraph = new  PathFindingGraph<>();
-	      char[][] chars = {{'W','O','O','O','O','W','W'},{
-	    		  'O','O','O','W','O','O','W'},{
-	    		  'O','S','O','W','O','T','O'},{
-	    		  'W','O','O','W','O','O','O'},{
-	    		  'W','O','O','O','O','O','W'}};
+	      char[][] chars = {
+	    		  {'W','O','O','O','O','W','W'},
+	    		  {'O','O','O','W','O','O','W'},
+	    		  {'O','S','O','W','O','T','O'},
+	    		  {'W','O','O','W','O','O','O'},
+	    		  {'W','O','O','O','O','O','W'}};
 	      newGraph = ArrayToGraph.twoDArrayToGraph(chars);
 	      
 	      newGraph.showAdjTable();

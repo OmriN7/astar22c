@@ -95,8 +95,8 @@ public class Driver
 	} // end openInputFile
 
 
-	//YANG -- after Vaughn and Fawzan are done w/ their tasks on this method...
-	//Try to split it up into about 4 methods to keep things clean!
+	//FOR LATER -- Move this to AStarGraph and try to split up the 4 phases into 4 different methods... 
+	//Omri, Fawzan and Vaughn
 	public static AStarGraph fileToGraph(Scanner fileScanner)
 	{
 		String nextLine = fileScanner.nextLine();
@@ -117,7 +117,7 @@ public class Driver
 	    		System.out.print("Please make sure that the every line has the same amount of characters!\n");
 				return null;
 			}
-			else if(!strings.contains(dataString)) //I made the error be a bit specific to give the user more feedback. -- Omri
+			else if(!strings.contains(dataString))
 			{
 	    		System.out.print("Error! Unkown characters detected.\n");
 	    		System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
@@ -145,7 +145,7 @@ public class Driver
 	    {
 	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
 	    	{
-	    		curChar = dataString.charAt((rowCnt*(rowSize+1))+colCnt);
+	    		curChar = dataString.charAt((rowCnt*(rowSize+2))+colCnt);
 	    		if(curChar != 'W') //If the char isn't a wall vertex
 	    		{
 	    			//Mark the key of the vertex
@@ -155,14 +155,18 @@ public class Driver
 	    			//Keeps track of the coordinates of the start and target vertex
 	    			if(curChar == 'S')
 	    			{
-	    				startingVertexCoord[0] = colCnt; //x coord
-	    				startingVertexCoord[1] = rowCnt; //y coord
+	    				startingVertexCoord[0] = rowCnt; //x coord
+	    				startingVertexCoord[1] = colCnt; //y coord
 	    			}
 	    			if(curChar == 'T')
 	    			{
-	    				targetVertexCoord[0] = colCnt; //x coord
-	    				targetVertexCoord[1] = rowCnt; //y coord
+	    				targetVertexCoord[0] = rowCnt; //x coord
+	    				targetVertexCoord[1] = colCnt; //y coord
 	    			}
+	    		}
+	    		else
+	    		{
+	    			dataArray[rowCnt][colCnt] = -1;
 	    		}
 	    	}
 	    }
@@ -179,7 +183,7 @@ public class Driver
 	    	{
 	    		if(dataArray[rowCnt][colCnt] != (-1)) // If it's not a wall
 	    		{
-	    			vertexRefernces[rowCnt][colCnt] = g.addVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16)); //Create a vertex!
+	    			vertexRefernces[rowCnt][colCnt] = g.addVertex(dataArray[rowCnt][colCnt], (colCnt), (rowCnt)); //Create a vertex!
 	    		}
 	    		else
 	    		{

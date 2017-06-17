@@ -25,4 +25,8 @@ public class AStarVertex<E> extends Vertex
 	
 	//VAUGHN 
 	//Make a "toString" method here...
+	public String toString() {
+        return "X value for this vertex: " + x
+		+ "\nY value for this vertex: " + y;
+    	}
 }

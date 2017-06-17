@@ -1,7 +1,8 @@
 package astar22c;
 
-import java.io.File;
+import java.io.*;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -76,6 +77,24 @@ public class Driver
 		
 		return scanner;
 	} // end openInputFile
+	
+	public static PrintWriter openOutputFile(String filename) 
+	{
+		FileOutputStream outFile=null;
+		   try {
+			   outFile = new FileOutputStream(filename);
+		   }catch( FileNotFoundException e )
+		   {
+		       System.err.println(e);
+		       return null;
+		   } //end catch
+	
+		   PrintWriter prtWriter = new PrintWriter(outFile, true);
+		   
+		   return prtWriter;
+	} // written by Yang
+	
+	
 
 
 	//YANG -- after Vaughn and Fawzan are done w/ their tasks on this method...

@@ -1,7 +1,9 @@
 package astar22c;
 
+import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
+
 interface Visitor<T>
 {
     public void visit(T obj);
@@ -146,14 +148,14 @@ public class Graph<E>
 		   Pair<Vertex<E>, Double> endPair = startVertex.adjList.remove(end);
 		   removedOK = endPair!=null;
 	   }
-	   /*// Add if UNDIRECTED GRAPH:
+	   // Add if UNDIRECTED GRAPH:
 		Vertex<E> endVertex = vertexSet.get(end);
 		if( endVertex != null )
 		{
 			Pair<Vertex<E>, Double> startPair = endVertex.adjList.remove(start);
 			removedOK = startPair!=null ;
 		}
-		*/
+		
 
 	   return removedOK;
    }
@@ -238,15 +240,56 @@ public class Graph<E>
 
    public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor)
    {
-        // YOU COMPLETE THIS (USE THE RECURSIVE ALGORITHM GIVEN FOR LESSON 11 EXERCISE)
-	   // Yang, Vaughn and Fawzan -- Please complete this method
-   }
-
-// Yang, Vaughn and Fawzan -- Please complete this method
+	   startVertex.visit();
+	   E startData = startVertex.getData();
+	   visitor.visit(startData);
+	   Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter =
+			   startVertex.iterator();
+	   while( iter.hasNext() )
+	   {
+		   Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter.next();
+		   Vertex<E> neighborVertex = nextEntry.getValue().first;
+		   if( !neighborVertex.isVisited() )
+		   {
+			   depthFirstTraversalHelper(neighborVertex, visitor);
+		   }
+	   }
+   }// Written by Yang
+   
+   
 // WRITE THE INSTANCE METHOD HERE TO
    //         WRITE THE GRAPH's vertices and its
    //         adjacency list TO A TEXT FILE (SUGGEST TO PASS AN
    //        ALREADY OPEN PrintWriter TO THIS) !
+   public void printToFile(PrintWriter prtWriter)
+   {
+	   Iterator<Entry<E, Vertex<E>>> iter;
+	   prtWriter.println( "------------------------ ");
+	   iter = vertexSet.entrySet().iterator();
+	   while( iter.hasNext() )
+	   {
+		  Vertex<E> vertex= iter.next().getValue();
+		   
+	      Iterator<Entry<E, Pair<Vertex<E>, Double>>> vertexIter ;
+	      Entry<E, Pair<Vertex<E>, Double>> entry;
+	      Pair<Vertex<E>, Double> pair;
+
+	      prtWriter.print( "Adj List for " + vertex.getData() + ": ");
+	      vertexIter = vertex.adjList.entrySet().iterator();
+	      
+	      while( iter.hasNext() )
+	      {
+	         entry = vertexIter.next();
+	         pair = entry.getValue();
+	         prtWriter.print( pair.first.data + "("
+	            + String.format("%3.1f", pair.second)
+	            + ") " );
+	      }
+	      prtWriter.println();
+	   }
+	   prtWriter.println();   
+
+   }// written by Yang
 
 
 }

@@ -1,3 +1,8 @@
+/**
+ * Written by Yang Guo
+ * A class that converts a 2D array to a graph
+ */
+
 package astar22c;
 
 public class ArrayToGraph 

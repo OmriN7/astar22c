@@ -28,11 +28,10 @@ public class Driver
 			switch(userInput)
 			{
 				case "help":
-					//Display the available commands...
-					//FAWZAN -- Explain how the program behvaves, what the commands are and how the input should be formatted.
-					//when a user types "help"
-					System.out.println("If you would like to start the program, enter a file name.");
-					System.out.println("If you would like to exit the program, enter exit.");
+					System.out.println("Available commands are: help, enter a file, exit.");
+					System.out.println("If you enter help, this screen will be shown.");
+					System.out.println("If you enter exit, the program will terminate.");
+					System.out.println("If you enter anything else, the program will assume it is a file name, and will try to open it.");
 					break; 
 
 				case "exit":
@@ -161,6 +160,8 @@ public class Driver
 	    
 	    
 	    Graph<AStarVertex> g = new Graph();
+		
+	    Vertex<AStarVertex> arr[][] = new Vertex[rowSize][colSize];
 	    
 	    //Loop through the array of ints and created the verticies
 	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
@@ -171,8 +172,7 @@ public class Driver
 	    		{
 	    			g.addToVertexSet(new AStarVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16))); //Create a vertex!
 	    			//Save the return values of this in a 2D array of references possibly? ask teacher
-				//int arr[][] = new int[rowSize][colSize];
-				//arr[rowCnt][colCnt] = dataArray[rowCnt][colCnt];
+				arr[rowCnt][colCnt] = g.addToVertexSet(new AStarVertex(dataArray[rowCnt][colCnt], (colCnt*16), (rowCnt*16)));
 	    		}
 	    	}
 	    }
@@ -182,6 +182,11 @@ public class Driver
 	    //FAWZAN
 	    //Loop through the array we've created of the references to the verticies
 	    //and connect them to each other using addToAdjList(reference, weight)
+		for(int rowCnt = 0; rowCnt < rowSize; rowCnt++) {
+	    	for(int colCnt = 0; colCnt < colSize; colCnt++) {
+	    		arr[0][0].addToAdjList(arr[rowCnt][colCnt], 1);
+	    	}
+	    }
 	    
 	    return g; //Return to main! 
 	}

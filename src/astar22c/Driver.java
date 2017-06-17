@@ -115,7 +115,6 @@ public class Driver
 		String dataString = nextLine;
 		int rowSize = 1;
 		int colSize = nextLine.length();
-		final Set<String> strings = new HashSet<String>(Arrays.asList("O", "W", "S", "T"));
 			
 		
 		while(fileScanner.hasNext())
@@ -129,14 +128,18 @@ public class Driver
 	    		System.out.print("Please make sure that the every line has the same amount of characters!\n");
 				return null;
 			}
-			else if(!strings.contains(dataString))
-			{
-	    		System.out.print("Error! Unkown characters detected.\n");
-	    		System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
-			}
-			
+			boolean isMatch = true; 
+		    	for (int counter = 0; counter < nextLine.length() && isMatch; counter++) {
+		        char letter = nextLine.charAt(counter);
+				if (letter != 'O' && letter != 'X' && letter != 'S' && letter != 'T') {
+					System.out.print("Error! Unkown characters detected.\n");
+					System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
+				    isMatch = false;
+				} 
+		   	}
+			System.out.println("good");
 			dataString = dataString + nextLine;
-			rowSize++;
+			rowSize++; //the input file i used had X's for some reason... 
 		}
 		
 		

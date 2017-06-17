@@ -33,6 +33,9 @@ public class Driver
 					System.out.print("\n");
 					System.out.print("HELP\tProvides Help information for commands.\n");
 					System.out.print("EXIT\tyou would like to exit the program, enter exit.\n");
+					System.out.print("ADDEDGE\tNeed to add...\n");
+					System.out.print("REMOVEEDGE\tNeed to add...\n");
+					System.out.print("UNDEOREMOVE\tNeed to add...\n");
 					System.out.print("\n");
 					System.out.print("Any input that isn't a command would be considered as a filename that the program would try to open.\n");
 					System.out.print("Programs should be formatted as follows:\n");
@@ -63,11 +66,20 @@ public class Driver
 					}
 					else
 					{
-						AStarGraph<Integer> dataGraph = fileToGraph(fileScanner);
+						AStarGraph<AStarTile> dataGraph = fileToGraph(fileScanner);
 						if(dataGraph != null)
 						{
+							//I commented these out as a template for which methods I need to add. - Omri
+							
+							//System.out.print("Graph recieved:\n");
+							//dataGraph.printGraph();
+							
 							dataGraph.findShortestPath();
-							//printShortestPath(Graph<AStarVertex> dataGraph, LinkedStack<AStarVertex> shortestPath)
+							
+							//System.out.print("Solved Graph:\n");
+							//dataGraph.printGraph();
+							
+							//dataGraph.saveGraphToFile();
 						}
 					}
 					break;
@@ -130,9 +142,8 @@ public class Driver
 		
 		
 		
-		int dataArray[][] = new int[rowSize][colSize];
+		AStarTile dataArray[][] = new AStarTile[rowSize][colSize];
 		char curChar;
-		int indexCnt = 0;
 		
 		//index0 - x
 		//index1 - y
@@ -149,8 +160,7 @@ public class Driver
 	    		if(curChar != 'W') //If the char isn't a wall vertex
 	    		{
 	    			//Mark the key of the vertex
-	    			dataArray[rowCnt][colCnt] = indexCnt;
-	    			indexCnt++;
+	    			dataArray[rowCnt][colCnt] = new AStarTile(colCnt, rowCnt);
 	    			
 	    			//Keeps track of the coordinates of the start and target vertex
 	    			if(curChar == 'S')
@@ -166,24 +176,24 @@ public class Driver
 	    		}
 	    		else
 	    		{
-	    			dataArray[rowCnt][colCnt] = -1;
+	    			dataArray[rowCnt][colCnt] = null;
 	    		}
 	    	}
 	    }
 	    
 	    
 	    
-	    AStarGraph<Integer> g = new AStarGraph();
-	    AStarVertex<Integer>[][] vertexRefernces = new AStarVertex[rowSize][colSize];
+	    AStarGraph g = new AStarGraph();
+	    Vertex<AStarTile>[][] vertexRefernces = new Vertex[rowSize][colSize];
 	    
 	    //Loop through the array of ints and created the verticies
 	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
 	    {
 	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
 	    	{
-	    		if(dataArray[rowCnt][colCnt] != (-1)) // If it's not a wall
+	    		if(dataArray[rowCnt][colCnt] != null) // If it's not a wall
 	    		{
-	    			vertexRefernces[rowCnt][colCnt] = g.addVertex(dataArray[rowCnt][colCnt], (colCnt), (rowCnt)); //Create a vertex!
+	    			vertexRefernces[rowCnt][colCnt] = g.addToVertexSet(dataArray[rowCnt][colCnt]); //Create a vertex!
 	    		}
 	    		else
 	    		{
@@ -203,17 +213,26 @@ public class Driver
 	    {
 	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
 	    	{
+	    		//Horizontal and vertical edges
 	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt, 1);
 	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt, 1);
 	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt-1, 1);
 	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt+1, 1);
+	    		
+	    		//Diagonal edges
+	    		/*
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt-1, Math.sqrt(2));
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt-1, Math.sqrt(2));
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt+1, Math.sqrt(2));
+	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt+1, Math.sqrt(2));
+	    		*/
 	    	}
 	    }
 	    
 	    return g; //Return to main! 
 	}
 	
-	public static void connectVerticies(AStarVertex vertexRefernces[][], int vert0x, int vert0y, int vert1x, int vert1y, double weight)
+	public static void connectVerticies(Vertex vertexRefernces[][], int vert0x, int vert0y, int vert1x, int vert1y, double weight)
 	{
 		try
 		{

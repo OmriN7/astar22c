@@ -7,8 +7,8 @@ import java.util.Iterator;
 public class AStarGraph<E> extends Graph
 {
 	//Instance Variables
-	private AStarVertex<E> startingPointVertex = null;
-	private AStarVertex<E> targetVertex = null;
+	private Vertex<E> startingPointVertex = null;
+	private Vertex<E> targetVertex = null;
 
 	//Default constructor
 	public AStarGraph()
@@ -22,7 +22,7 @@ public class AStarGraph<E> extends Graph
 		return startingPointVertex;
 	}
 
-	public void setStartingPointVertex(AStarVertex<E> startingPointVertex) 
+	public void setStartingPointVertex(Vertex<E> startingPointVertex) 
 	{
 		this.startingPointVertex = startingPointVertex;
 	}
@@ -32,24 +32,19 @@ public class AStarGraph<E> extends Graph
 		return targetVertex;
 	}
 
-	public void setTargetVertex(AStarVertex<E> targetVertex) 
+	public void setTargetVertex(Vertex<E> targetVertex) 
 	{
 		this.targetVertex = targetVertex;
 	}
 	
+	
 	//Other Methods
-	public AStarVertex<E> addVertex(E data, float x, float y)
+	public void saveGraphToFile()
 	{
-		AStarVertex v = new AStarVertex<E>(data,x ,y);
-		v.setY(x);
-		v.setY(y);
-
-		vertexSet.put(data, v);
-		
-		return v;
-		
-		
+		//Ask the user for a filename
+		//Save it :P
 	}
+	
 	public LinkedQueue findShortestPath()
 	{
 		Vertex curVertex = startingPointVertex;
@@ -58,17 +53,25 @@ public class AStarGraph<E> extends Graph
 		double curScore;
 		
 		Pair<Vertex<E>, Double> curPair;
-		Pair<Vertex<E>, Double> shorterPair = null;
+		Pair<Vertex<E>, Double> shortestPair = null;
 		
 		
 		Collection pairs;
         Iterator<Pair<Vertex<E>, Double>> pairIterator;
 		
-        double tempWeight;
-        AStarVertex<Integer> tempEdge;
+        double edgeWeight;
+        double distanceFromEdgeToTarget;
+        Vertex<AStarTile> tempEdge;
         
         LinkedQueue path = new LinkedQueue();
         
+        
+        //Add the startingVertex
+        curVertex.visit();
+        path.enqueue(new Pair(curVertex, 0));
+        System.out.print(curVertex.getData().toString() + "\n");
+        
+        //Add the remaining vertices
         while(curVertex != targetVertex)
 		{
 			pairs = curVertex.adjList.values();
@@ -77,32 +80,28 @@ public class AStarGraph<E> extends Graph
 	        while(pairIterator.hasNext()) 
 	        {
 	        	curPair = pairIterator.next();
-	        	tempEdge = (AStarVertex<Integer>) curPair.first; // Vertex address
+	        	tempEdge = (Vertex<AStarTile>) curPair.first; // Vertex address
 	        	
 	        	if(!tempEdge.isVisited())
 	        	{
-		        	tempWeight = ((Double) curPair.second).doubleValue(); // Weight to that vertex
+		        	edgeWeight = ((Double) curPair.second).doubleValue();
+		        	distanceFromEdgeToTarget = Math.sqrt(Math.pow((tempEdge.getData().x - ((Vertex<AStarTile>) targetVertex).getData().x),2) + Math.pow((tempEdge.getData().y - ((Vertex<AStarTile>) targetVertex).getData().y),2));
 		        	
-		        	double a = tempEdge.x-targetVertex.x;
-		        	double b = tempEdge.y-targetVertex.y;
-		        	
-		        	double q = tempEdge.x;
-		        	double w = tempEdge.y;
-		        	
-		        	curScore = tempWeight + Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+		        	curScore = edgeWeight + distanceFromEdgeToTarget;
 		        	
 		        	if(curScore < lowestScore)
 		        	{
 		        		lowestScore = curScore;
-		        		shorterPair = curPair;
+		        		shortestPair = curPair;
 		        	}
 	        	}
 	        }
 	        
 	        curVertex.visit();
-	        curVertex = shorterPair.first;
-	        path.enqueue(shorterPair);
+	        curVertex = shortestPair.first;
+	        path.enqueue(shortestPair);
 	        lowestScore = Double.MAX_VALUE;
+	        System.out.print(curVertex.getData().toString() + "\n");
 		}
         
 		return path;

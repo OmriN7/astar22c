@@ -109,7 +109,7 @@ public class Driver
 
 	//FOR LATER -- Move this to AStarGraph and try to split up the 4 phases into 4 different methods... 
 	//Omri, Fawzan and Vaughn
-	public static AStarGraph fileToGraph(Scanner fileScanner)
+	public static AStarGraph<AStarTile> fileToGraph(Scanner fileScanner)
 	{
 		String nextLine = fileScanner.nextLine();
 		String dataString = nextLine;
@@ -131,7 +131,7 @@ public class Driver
 			boolean isMatch = true; 
 		    	for (int counter = 0; counter < nextLine.length() && isMatch; counter++) {
 		        char letter = nextLine.charAt(counter);
-				if (letter != 'O' && letter != 'X' && letter != 'S' && letter != 'T') {
+				if (letter != 'O' && letter != 'W' && letter != 'S' && letter != 'T') {
 					System.out.print("Error! Unkown characters detected.\n");
 					System.out.print("Please make sure that the every line has either the character 'O', 'W', 'S' or 'T'.\n");
 				    isMatch = false;
@@ -143,116 +143,133 @@ public class Driver
 		}
 		
 		
+		char[][] charArr = new char[rowSize][colSize];
+		int index = 0;
+		for(int i=0; i<rowSize; i++)
+		{
+			for(int j=0; j<colSize; j++)
+			{
+				charArr[rowSize][colSize] = dataString.charAt(index);
+				index++;
+			}
+		}
 		
+		return ArrayToGraph.twoDArrayToGraph(charArr);
 		
-		AStarTile dataArray[][] = new AStarTile[rowSize][colSize];
-		char curChar;
-		
-		//index0 - x
-		//index1 - y
-		int startingVertexCoord[] = new int[2];
-		int targetVertexCoord[] = new int[2];
-		
-		
-		//Populate data array
-	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
-	    {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
-	    	{
-	    		curChar = dataString.charAt((rowCnt*(rowSize+2))+colCnt);
-	    		if(curChar != 'W') //If the char isn't a wall vertex
-	    		{
-	    			//Mark the key of the vertex
-	    			dataArray[rowCnt][colCnt] = new AStarTile(colCnt, rowCnt);
-	    			
-	    			//Keeps track of the coordinates of the start and target vertex
-	    			if(curChar == 'S')
-	    			{
-	    				startingVertexCoord[0] = rowCnt; //x coord
-	    				startingVertexCoord[1] = colCnt; //y coord
-	    			}
-	    			if(curChar == 'T')
-	    			{
-	    				targetVertexCoord[0] = rowCnt; //x coord
-	    				targetVertexCoord[1] = colCnt; //y coord
-	    			}
-	    		}
-	    		else
-	    		{
-	    			dataArray[rowCnt][colCnt] = null;
-	    		}
-	    	}
-	    }
-	    
-	    
-	    
-	    AStarGraph g = new AStarGraph();
-	    Vertex<AStarTile>[][] vertexRefernces = new Vertex[rowSize][colSize];
-	    
-	    //Loop through the array of ints and created the verticies
-	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
-	    {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
-	    	{
-	    		if(dataArray[rowCnt][colCnt] != null) // If it's not a wall
-	    		{
-	    			vertexRefernces[rowCnt][colCnt] = g.addToVertexSet(dataArray[rowCnt][colCnt]); //Create a vertex!
-	    		}
-	    		else
-	    		{
-	    			vertexRefernces[rowCnt][colCnt] = null;
-	    		}
-	    	}
-	    }
-	    
-	    //Set start and target nodes
-	    g.setStartingPointVertex(vertexRefernces[startingVertexCoord[0]][startingVertexCoord[1]]);
-	    g.setTargetVertex(vertexRefernces[targetVertexCoord[0]][targetVertexCoord[1]]);
-	    
-	    
-	    
-	    
-	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
-	    {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
-	    	{
-	    		//Horizontal and vertical edges
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt, 1);
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt, 1);
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt-1, 1);
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt+1, 1);
-	    		
-	    		//Diagonal edges
-	    		/*
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt-1, Math.sqrt(2));
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt-1, Math.sqrt(2));
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt+1, Math.sqrt(2));
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt+1, Math.sqrt(2));
-	    		*/
-	    	}
-	    }
-	    
-	    return g; //Return to main! 
 	}
+		
+// Loop based AStarGraph construction, replaced with recursion based method above	
 	
-	public static void connectVerticies(Vertex vertexRefernces[][], int vert0x, int vert0y, int vert1x, int vert1y, double weight)
-	{
-		try
-		{
-			if(vertexRefernces[vert0x][vert0y] == null || vertexRefernces[vert1x][vert1y] == null)
-			{
-				return;
-			}
-			else
-			{
-				vertexRefernces[vert0x][vert0y].addToAdjList(vertexRefernces[vert1x][vert1y], weight);
-			}
-		}
-		catch (IndexOutOfBoundsException e)
-		{
-		     //Do nothing.
-		}
-	}
+//		AStarTile dataArray[][] = new AStarTile[rowSize][colSize];
+//		char curChar;
+//		
+//		//index0 - x
+//		//index1 - y
+//		int startingVertexCoord[] = new int[2];
+//		int targetVertexCoord[] = new int[2];
+//		
+//		
+//		//Populate data array
+//	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
+//	    {
+//	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
+//	    	{
+//	    		curChar = dataString.charAt((rowCnt*(rowSize+2))+colCnt);
+//	    		if(curChar != 'W') //If the char isn't a wall vertex
+//	    		{
+//	    			//Mark the key of the vertex
+//	    			dataArray[rowCnt][colCnt] = new AStarTile(colCnt, rowCnt);
+//	    			
+//	    			//Keeps track of the coordinates of the start and target vertex
+//	    			if(curChar == 'S')
+//	    			{
+//	    				startingVertexCoord[0] = rowCnt; //x coord
+//	    				startingVertexCoord[1] = colCnt; //y coord
+//	    			}
+//	    			if(curChar == 'T')
+//	    			{
+//	    				targetVertexCoord[0] = rowCnt; //x coord
+//	    				targetVertexCoord[1] = colCnt; //y coord
+//	    			}
+//	    		}
+//	    		else
+//	    		{
+//	    			dataArray[rowCnt][colCnt] = null;
+//	    		}
+//	    	}
+//	    }
+//	    
+//	    
+//	    
+//	    AStarGraph g = new AStarGraph();
+//	    Vertex<AStarTile>[][] vertexRefernces = new Vertex[rowSize][colSize];
+//	    
+//	    //Loop through the array of ints and created the verticies
+//	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
+//	    {
+//	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
+//	    	{
+//	    		if(dataArray[rowCnt][colCnt] != null) // If it's not a wall
+//	    		{
+//	    			vertexRefernces[rowCnt][colCnt] = g.addToVertexSet(dataArray[rowCnt][colCnt]); //Create a vertex!
+//	    		}
+//	    		else
+//	    		{
+//	    			vertexRefernces[rowCnt][colCnt] = null;
+//	    		}
+//	    	}
+//	    }
+//	    
+//	    //Set start and target nodes
+//	    g.setStartingPointVertex(vertexRefernces[startingVertexCoord[0]][startingVertexCoord[1]]);
+//	    g.setTargetVertex(vertexRefernces[targetVertexCoord[0]][targetVertexCoord[1]]);
+//	    
+//	    
+//	    
+//	    
+//	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
+//	    {
+//	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
+//	    	{
+//	    		//Horizontal and vertical edges
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt, 1);
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt, 1);
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt-1, 1);
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt+1, 1);
+//	    		
+//	    		//Diagonal edges
+//	    		/*
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt-1, Math.sqrt(2));
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt-1, Math.sqrt(2));
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt+1, Math.sqrt(2));
+//	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt+1, Math.sqrt(2));
+//	    		*/
+//	    	}
+//	    }
+//	    
+//	    return g; //Return to main! 
+//	}
+//	
+//	public static void connectVerticies(Vertex vertexRefernces[][], int vert0x, int vert0y, int vert1x, int vert1y, double weight)
+//	{
+//		try
+//		{
+//			if(vertexRefernces[vert0x][vert0y] == null || vertexRefernces[vert1x][vert1y] == null)
+//			{
+//				return;
+//			}
+//			else
+//			{
+//				vertexRefernces[vert0x][vert0y].addToAdjList(vertexRefernces[vert1x][vert1y], weight);
+//			}
+//		}
+//		catch (IndexOutOfBoundsException e)
+//		{
+//		     //Do nothing.
+//		}
+//	}
+	
+	
 }
 
 

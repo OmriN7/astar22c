@@ -25,13 +25,14 @@ public class GraphTester
 
 	      myGraph1.showAdjTable();
 	      
-	      Graph<AStarTile> newGraph = new  PathFindingGraph<>();
+	      AStarGraph<AStarTile> newGraph = new  AStarGraph<>();
 	      char[][] chars = {
 	    		  {'W','O','O','O','O','W','W'},
 	    		  {'O','O','O','W','O','O','W'},
 	    		  {'O','S','O','W','O','T','O'},
 	    		  {'W','O','O','W','O','O','O'},
 	    		  {'W','O','O','O','O','O','W'}};
+	      
 	      newGraph = ArrayToGraph.twoDArrayToGraph(chars);
 	      
 	      newGraph.showAdjTable();

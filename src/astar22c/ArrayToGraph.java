@@ -12,19 +12,20 @@ public class ArrayToGraph
 	 	OPEN, WALL, START, TARGET
 	}
 	 	
-	public static PathFindingGraph<AStarTile> twoDArrayToGraph(char[][] chars)
+	public static AStarGraph<AStarTile> twoDArrayToGraph(char[][] chars)
 	{
-	 	PathFindingGraph<AStarTile> myGraph = new PathFindingGraph<>();
-	 	AStarTile data[][] = new AStarTile[chars.length][chars.clone()[0].length];
+		AStarGraph<AStarTile> myGraph = new AStarGraph<>();
+	 	AStarTile data[][] = new AStarTile[chars.length][chars[0].length];
 	 		
 	 	for(int x=0; x<chars.length; x++)
 	 		for(int y=0; y<chars[0].length; y++)
-	 			DFS(chars, myGraph, data,x, y);
+	 			connectTile(chars, myGraph, data,x, y);
 	 		
 	 	return myGraph;
 	 }
 	 	
-	 private static AStarTile DFS(char[][] chars, PathFindingGraph<AStarTile> graph, 
+	@SuppressWarnings("unchecked")
+	private static AStarTile connectTile(char[][] chars, AStarGraph<AStarTile> graph, 
 			 AStarTile[][] data, int x, int y)
 	 {
 	 	if(x<0 || x>=chars.length || y<0 || y>=chars[0].length)
@@ -42,21 +43,40 @@ public class ArrayToGraph
 	 	else
 	 		return null;
 	 		
-	 	AStarTile tempData = DFS(chars, graph, data,x+1, y);
+	 	AStarTile tempData = connectTile(chars, graph, data,x+1, y);
 	 	if(tempData != null)
 	 		graph.addEdge(newTile, tempData, 1.0);
 	 		
-	 	tempData = DFS(chars, graph, data,x-1, y);
+	 	tempData = connectTile(chars, graph, data,x-1, y);
 	 	if(tempData != null)
 	 		graph.addEdge(newTile, tempData, 1.0);
 	 		
-	 	tempData = DFS(chars, graph, data,x, y+1);
+	 	tempData = connectTile(chars, graph, data,x, y+1);
 	 	if(tempData != null)
 			graph.addEdge(newTile, tempData, 1.0);
 	 		
-	 	tempData = DFS(chars, graph, data,x, y-1);
+	 	tempData = connectTile(chars, graph, data,x, y-1);
 	 	if(tempData != null)
 	 		graph.addEdge(newTile, tempData, 1.0);
+	 	
+//connection with diagonal tiles, commented out for now
+	 	
+//	 	tempData = connectTile(chars, graph, data,x+1, y+1);
+//	 	if(tempData != null)
+//	 		graph.addEdge(newTile, tempData, 1.0);
+//	 		
+//	 	tempData = connectTile(chars, graph, data,x-1, y-1);
+//	 	if(tempData != null)
+//	 		graph.addEdge(newTile, tempData, 1.0);
+//	 		
+//	 	tempData = connectTile(chars, graph, data,x-1, y+1);
+//	 	if(tempData != null)
+//			graph.addEdge(newTile, tempData, 1.0);
+//	 		
+//	 	tempData = connectTile(chars, graph, data,x+1, y-1);
+//	 	if(tempData != null)
+//	 		graph.addEdge(newTile, tempData, 1.0);
+	 	
 	 			
 	 	return newTile;	
 	 }
@@ -78,7 +98,6 @@ public class ArrayToGraph
 	 	}
 	}
 	 
-
 	 	
 //	 public static class AStarTile
 //	 {

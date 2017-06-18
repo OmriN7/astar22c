@@ -2,6 +2,7 @@ package astar22c;
 
 import java.util.*;
 
+import astar22c.ArrayToGraph.TileType;
 
 import java.text.*;
 
@@ -25,7 +26,7 @@ public class GraphTester
 
 	      myGraph1.showAdjTable();
 	      
-	      AStarGraph<AStarTile> newGraph = new  AStarGraph<>();
+	      AStarGraph<TileType> newGraph = new  AStarGraph<>();
 	      char[][] chars = {
 	    		  {'W','O','O','O','O','W','W'},
 	    		  {'O','O','O','W','O','O','W'},
@@ -33,11 +34,12 @@ public class GraphTester
 	    		  {'W','O','O','W','O','O','O'},
 	    		  {'W','O','O','O','O','O','W'}};
 	      
-	      newGraph = ArrayToGraph.twoDArrayToGraph(chars);
+	      ArrayToGraph arrayToGraphConstructor = new ArrayToGraph();
+	      newGraph = arrayToGraphConstructor.twoDArrayToGraph(chars);
 	      
 	      newGraph.showAdjTable();
 
-
+	      newGraph.findShortestPath();
 	   }
 
 }

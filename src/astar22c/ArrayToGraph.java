@@ -5,45 +5,52 @@
 
 package astar22c;
 
-public class ArrayToGraph 
+@SuppressWarnings("unchecked")
+public class ArrayToGraph
 {
 	public enum TileType
 	{
 	 	OPEN, WALL, START, TARGET
 	}
 	 	
-	public static AStarGraph<AStarTile> twoDArrayToGraph(char[][] chars)
+	public AStarGraph<TileType> twoDArrayToGraph(char[][] chars)
 	{
-		AStarGraph<AStarTile> myGraph = new AStarGraph<>();
-	 	AStarTile data[][] = new AStarTile[chars.length][chars[0].length];
+		AStarGraph<TileType> myGraph = new AStarGraph<>();
+		AStarTile<TileType> data[][] = new AStarTile[chars.length][chars[0].length];
 	 		
-	 	for(int x=0; x<chars.length; x++)
-	 		for(int y=0; y<chars[0].length; y++)
+	 	for(int y=0; y<chars.length; y++)
+	 		for(int x=0; x<chars[0].length; x++)
 	 			connectTile(chars, myGraph, data,x, y);
 	 		
 	 	return myGraph;
 	 }
 	 	
-	@SuppressWarnings("unchecked")
-	private static AStarTile connectTile(char[][] chars, AStarGraph<AStarTile> graph, 
-			 AStarTile[][] data, int x, int y)
+	private AStarTile<TileType> connectTile(char[][] chars, AStarGraph<TileType> graph, 
+			 AStarTile<TileType>[][] data, int x, int y)
 	 {
-	 	if(x<0 || x>=chars.length || y<0 || y>=chars[0].length)
+	 	if(x<0 || x>=chars[0].length || y<0 || y>=chars.length)
 	 		return null;
-	 	if(data[x][y] != null)
-	 		return data[x][y];
+	 	if(data[y][x] != null)
+	 		return data[y][x];
 	 	
-	 	TileType newType = checkType(chars[x][y]);
-	 	AStarTile newTile;
-	 	if(newType != null && newType != TileType.WALL)
+	 	TileType type = checkType(chars[y][x]);
+	 		
+	 	AStarTile<TileType> newTile;
+	 	if(type != null && type != TileType.WALL)
 	 	{
-	 		newTile = new AStarTile(x, y);
-	 		data[x][y] = newTile;
+	 		newTile = new AStarTile<TileType>(x, y, type);
+	 		data[y][x] = newTile;
 	 	}
 	 	else
 	 		return null;
+	 	
+	 	if(type == TileType.START)
+	 		graph.setStartingPointVertex(newTile);
+	 	if(type == TileType.TARGET)
+	 		graph.setTargetVertex(newTile);
+	 	
 	 		
-	 	AStarTile tempData = connectTile(chars, graph, data,x+1, y);
+	 	AStarTile<TileType> tempData = connectTile(chars, graph, data,x+1, y);
 	 	if(tempData != null)
 	 		graph.addEdge(newTile, tempData, 1.0);
 	 		

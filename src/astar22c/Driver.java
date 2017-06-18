@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import astar22c.ArrayToGraph.TileType;
+
 public class Driver
 {
 	//Global Vars
@@ -66,7 +68,7 @@ public class Driver
 					}
 					else
 					{
-						AStarGraph<AStarTile> dataGraph = fileToGraph(fileScanner);
+						AStarGraph<TileType> dataGraph = fileToGraph(fileScanner);
 						if(dataGraph != null)
 						{
 							//I commented these out as a template for which methods I need to add. - Omri
@@ -109,7 +111,7 @@ public class Driver
 
 	//FOR LATER -- Move this to AStarGraph and try to split up the 4 phases into 4 different methods... 
 	//Omri, Fawzan and Vaughn
-	public static AStarGraph<AStarTile> fileToGraph(Scanner fileScanner)
+	public static AStarGraph<TileType> fileToGraph(Scanner fileScanner)
 	{
 		String nextLine = fileScanner.nextLine();
 		String dataString = nextLine;
@@ -153,8 +155,10 @@ public class Driver
 				index++;
 			}
 		}
-		
-		return ArrayToGraph.twoDArrayToGraph(charArr);
+
+	      
+	    ArrayToGraph arrayToGraphConstructor = new ArrayToGraph();
+	    return arrayToGraphConstructor.twoDArrayToGraph(charArr);
 		
 	}
 		

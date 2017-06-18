@@ -2,12 +2,16 @@ package astar22c;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map.Entry;
+
+import astar22c.ArrayToGraph.TileType;
 
 public class AStarGraph<E> extends Graph<AStarTile<E>>
 {
 	//Instance Variables
 	private AStarTile<E> startingPointVertex = null;
 	private AStarTile<E> targetVertex = null;
+	private LinkedStack<Pair<Vertex<AStarTile<E>>, Double>> path = null;
 
 	//Default constructor
 	public AStarGraph()
@@ -38,15 +42,10 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	
 	
 	//Other Methods
-	public void saveGraphToFile()
-	{
-		//Ask the user for a filename
-		//Save it :P
-	}
-	
-	public LinkedQueue<Pair<Vertex<AStarTile<E>>, Double>> findShortestPath()
+	public void findShortestPath()
 	{
 		Vertex<AStarTile<E>> curVertex = vertexSet.get(startingPointVertex);
+		Vertex<AStarTile<E>> startVertex = curVertex;
 		Vertex<AStarTile<E>> endVertex = vertexSet.get(targetVertex);
 		
 		double lowestScore = Double.MAX_VALUE;
@@ -63,17 +62,16 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
         double distanceFromEdgeToTarget;
         Vertex<AStarTile<E>> tempEdge;
         
-        LinkedQueue<Pair<Vertex<AStarTile<E>>, Double>> path = new LinkedQueue<Pair<Vertex<AStarTile<E>>, Double>>();
+        path = new LinkedStack<Pair<Vertex<AStarTile<E>>, Double>>();
         
         
         //Add the startingVertex
         curVertex.visit();
-        path.enqueue(new Pair<Vertex<AStarTile<E>>, Double>(curVertex, 0.0));
-        System.out.print(curVertex.getData().toString() + "\n");
         
-        //Add the remaining vertices
+        //Go to target and mark possible steps
         while(curVertex != endVertex)
 		{
+        	//graphToTableString();
 			pairs = curVertex.adjList.values();
        	 	pairIterator = pairs.iterator();
        	 
@@ -96,16 +94,137 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 		        	}
 	        	}
 	        }
-	        
-	        curVertex.visit();
-	        curVertex = shortestPair.first;
-	        path.enqueue(shortestPair);
+
+	        //Check for dead-end
+	        if(curVertex == shortestPair.first)
+	        {
+	        	curVertex = path.pop().first;
+	        }
+	        else
+	        {
+	        	path.push(shortestPair);
+		        curVertex.visit();
+		        curVertex = shortestPair.first;
+	        }
 	        lowestScore = Double.MAX_VALUE;
-	        System.out.print(curVertex.getData().toString() + "\n");
 		}
         
-		return path;
+        //Step back
+        path.push(shortestPair);
+        while(curVertex != startVertex)
+        {
+			pairs = curVertex.adjList.values();
+       	 	pairIterator = pairs.iterator();
+       	 
+	        while(pairIterator.hasNext()) 
+	        {
+	        	curPair = pairIterator.next();
+	        	tempEdge = (Vertex<AStarTile<E>>) curPair.first; // Vertex address
+	        	
+	        	if(tempEdge.isVisited())
+	        	{
+		        	edgeWeight = ((Double) curPair.second).doubleValue();
+		        	distanceFromEdgeToTarget = Math.sqrt(Math.pow((tempEdge.getData().x - startingPointVertex.x),2) + Math.pow((tempEdge.getData().y - startingPointVertex.y),2));
+		        	
+		        	curScore = edgeWeight + distanceFromEdgeToTarget;
+		        	
+		        	if(curScore < lowestScore)
+		        	{
+		        		lowestScore = curScore;
+		        		shortestPair = curPair;
+		        	}
+	        	}
+	        }
+
+	        curVertex.unvisit();
+	        curVertex = shortestPair.first;
+	        path.push(shortestPair);
+	        lowestScore = Double.MAX_VALUE;
+        }
+        
 	}
 	
-	
-}
+	public String graphToTableString()
+	{
+		String returnValue = "";
+		int widthSize = 0;
+		int heightSize = 0;
+
+		Iterator<Entry<AStarTile<E>, Vertex<AStarTile<E>>>> iter; 
+		Vertex<AStarTile<E>> tempVert;
+
+		iter = vertexSet.entrySet().iterator();
+		while(iter.hasNext())
+		{
+			tempVert = iter.next().getValue();
+			
+			if(tempVert.data.x > widthSize)
+			{
+				widthSize = (int) tempVert.data.x;
+			}
+
+			if(tempVert.data.y > heightSize)
+			{
+				heightSize = (int) tempVert.data.y;
+			}
+		}
+		
+		widthSize = widthSize + 2;
+		heightSize = heightSize + 1;
+		
+		char table[][] = new char[heightSize][widthSize];
+		
+		for(int h = 0; h < heightSize; h++)
+		{
+			for(int w = 0; w < (widthSize-1); w++)
+			{
+				table[h][w] = ' ';
+			}
+			table[h][(widthSize-1)] = '\n';
+		}
+		
+		iter = vertexSet.entrySet().iterator();
+		while(iter.hasNext())
+		{
+			tempVert = iter.next().getValue();
+			int tempX = (int) tempVert.data.x;
+			int tempY = (int) tempVert.data.y;
+			TileType type = (TileType) tempVert.data.data;
+			
+			if(type == TileType.OPEN)
+			{
+				table[tempY][tempX] = 'O';
+			}
+			else if(type == TileType.START)
+			{
+				table[tempY][tempX] = 'S';
+			}
+			else if(type == TileType.TARGET)
+			{
+				table[tempY][tempX] = 'T';
+			}
+		}
+		
+		if(path != null)
+		{
+			while(!path.isEmpty())
+			{
+				AStarTile<E> v = path.pop().first.getData();
+				table[(int)v.y][(int)v.x] = 'X';
+			}
+		}
+		
+		for(int h = 0; h < heightSize; h++)
+		{
+			for(int w = 0; w < widthSize; w++)
+			{
+				returnValue = returnValue + table[h][w];
+			}
+		}
+
+		return returnValue;
+	}
+} // Written by Omri
+
+
+

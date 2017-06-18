@@ -1,8 +1,5 @@
 package astar22c;
 
-//Omri & Yang
-
-
 public class AStarTile<E>
 {
 	//Instance Variables
@@ -31,5 +28,4 @@ public class AStarTile<E>
 	{
 		return "AStarTile [x=" + x + ", y=" + y + "]";
 	}
-
-}
+} // Written by Omri & Yang

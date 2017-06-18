@@ -182,13 +182,13 @@ public class Graph<E>
    // reset all vertices to unvisited
    public void unvisitVertices()
    {
-	      Iterator<Entry<E, Vertex<E>>> iter;
+	   Iterator<Entry<E, Vertex<E>>> iter;
 
-	      iter = vertexSet.entrySet().iterator();
-	      while( iter.hasNext() )
-	      {
-	         iter.next().getValue().unvisit();
-	      }
+	   iter = vertexSet.entrySet().iterator();
+	   while( iter.hasNext() )
+	   {
+		   iter.next().getValue().unvisit();
+	   }
    }
 
    /** Breadth-first traversal from the parameter startElement*/
@@ -277,7 +277,7 @@ public class Graph<E>
 	      prtWriter.print( "Adj List for " + vertex.getData() + ": ");
 	      vertexIter = vertex.adjList.entrySet().iterator();
 	      
-	      while( iter.hasNext() )
+	      while( vertexIter.hasNext() )
 	      {
 	         entry = vertexIter.next();
 	         pair = entry.getValue();
@@ -287,8 +287,8 @@ public class Graph<E>
 	      }
 	      prtWriter.println();
 	   }
-	   prtWriter.println();   
-
+	   prtWriter.println();
+	   prtWriter.close();  
    }// written by Yang
 
 

@@ -12,10 +12,10 @@ public class ArrayToGraph
 	 	OPEN, WALL, START, TARGET
 	}
 	 	
-	public static PathFindingGraph<TileData> twoDArrayToGraph(char[][] chars)
+	public static PathFindingGraph<AStarTile> twoDArrayToGraph(char[][] chars)
 	{
-	 	PathFindingGraph<TileData> myGraph = new PathFindingGraph<>();
-	 	TileData data[][] = new TileData[chars.length][chars.clone()[0].length];
+	 	PathFindingGraph<AStarTile> myGraph = new PathFindingGraph<>();
+	 	AStarTile data[][] = new AStarTile[chars.length][chars.clone()[0].length];
 	 		
 	 	for(int x=0; x<chars.length; x++)
 	 		for(int y=0; y<chars[0].length; y++)
@@ -24,8 +24,8 @@ public class ArrayToGraph
 	 	return myGraph;
 	 }
 	 	
-	 private static TileData DFS(char[][] chars, PathFindingGraph<TileData> graph, 
-			 TileData[][] data, int x, int y)
+	 private static AStarTile DFS(char[][] chars, PathFindingGraph<AStarTile> graph, 
+			 AStarTile[][] data, int x, int y)
 	 {
 	 	if(x<0 || x>=chars.length || y<0 || y>=chars[0].length)
 	 		return null;
@@ -33,32 +33,32 @@ public class ArrayToGraph
 	 		return data[x][y];
 	 	
 	 	TileType newType = checkType(chars[x][y]);
-	 	TileData newData;
+	 	AStarTile newTile;
 	 	if(newType != null && newType != TileType.WALL)
 	 	{
-	 		newData = new TileData(newType, x, y);
-	 		data[x][y] = newData;
+	 		newTile = new AStarTile(x, y);
+	 		data[x][y] = newTile;
 	 	}
 	 	else
 	 		return null;
 	 		
-	 	TileData tempData = DFS(chars, graph, data,x+1, y);
+	 	AStarTile tempData = DFS(chars, graph, data,x+1, y);
 	 	if(tempData != null)
-	 		graph.addEdge(newData, tempData, 1.0);
+	 		graph.addEdge(newTile, tempData, 1.0);
 	 		
 	 	tempData = DFS(chars, graph, data,x-1, y);
 	 	if(tempData != null)
-	 		graph.addEdge(newData, tempData, 1.0);
+	 		graph.addEdge(newTile, tempData, 1.0);
 	 		
 	 	tempData = DFS(chars, graph, data,x, y+1);
 	 	if(tempData != null)
-			graph.addEdge(newData, tempData, 1.0);
+			graph.addEdge(newTile, tempData, 1.0);
 	 		
 	 	tempData = DFS(chars, graph, data,x, y-1);
 	 	if(tempData != null)
-	 		graph.addEdge(newData, tempData, 1.0);
+	 		graph.addEdge(newTile, tempData, 1.0);
 	 			
-	 	return newData;	
+	 	return newTile;	
 	 }
 	 	
 	 private static TileType checkType(char c)
@@ -77,32 +77,34 @@ public class ArrayToGraph
 	 		return null;
 	 	}
 	}
+	 
+
 	 	
-	 public static class TileData
-	 {
-	 	public TileType type;
-		public int x, y;
-	 		
-	 	public TileData(TileType t, int x, int y)
-	 	{
-	 		type = t;
-	 		this.x = x;
-	 		this.y = y;
-	 	}
-	 	
-	 	public String toString()
-	 	{
-	 		switch(type)
-	 		{
-	 		case OPEN:
-	 			return "OPEN("+x+","+y+")";
-	 		case START:
-	 			return "START("+x+","+y+")";
-	 		case TARGET:
-	 			return "TARGET("+x+","+y+")";
-	 		default:
-	 			return null;
-	 		}
-	 	}
-	 }
+//	 public static class AStarTile
+//	 {
+//	 	public TileType type;
+//		public int x, y;
+//	 		
+//	 	public TileData(TileType t, int x, int y)
+//	 	{
+//	 		type = t;
+//	 		this.x = x;
+//	 		this.y = y;
+//	 	}
+//	 	
+//	 	public String toString()
+//	 	{
+//	 		switch(type)
+//	 		{
+//	 		case OPEN:
+//	 			return "OPEN["+x+","+y+"]";
+//	 		case START:
+//	 			return "START["+x+","+y+"]";
+//	 		case TARGET:
+//	 			return "TARGET["+x+","+y+"]";
+//	 		default:
+//	 			return null;
+//	 		}
+//	 	}
+//	 }
 }

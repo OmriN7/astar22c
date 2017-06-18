@@ -12,6 +12,7 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	private AStarTile<E> startingPointVertex = null;
 	private AStarTile<E> targetVertex = null;
 	private LinkedStack<Pair<Vertex<AStarTile<E>>, Double>> path = null;
+	private LinkedStack<Pair<AStarTile<E>,AStarTile<E>>> removedEdgePairs = null;
 
 	//Default constructor
 	public AStarGraph()
@@ -223,8 +224,24 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 		}
 
 		return returnValue;
-	}
-} // Written by Omri
+	}// Written by Omri
 
-
-
+	@Override
+	public boolean remove(AStarTile<E> start, AStarTile<E> end)
+	{
+		boolean result = super.remove(start, end);
+		if(result)
+			removedEdgePairs.push(new Pair<AStarTile<E>, AStarTile<E>>(start, end));
+		return result;
+	}// Written by Yang
+	
+	public void undoRemoval()
+	{
+		Pair<AStarTile<E>,AStarTile<E>> removedEdgePair = removedEdgePairs.pop();
+		
+		// the cost has to be constant now
+		super.addEdge(removedEdgePair.first, removedEdgePair.second, 1.0);
+			
+	}// Written by Yang
+	
+}

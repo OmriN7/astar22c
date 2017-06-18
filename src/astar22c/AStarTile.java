@@ -1,5 +1,6 @@
 package astar22c;
 
+//Omri & Yang
 public class AStarTile<E>
 {
 	//Instance Variables

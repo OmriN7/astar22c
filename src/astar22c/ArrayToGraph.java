@@ -10,7 +10,7 @@ public class ArrayToGraph
 {
 	public enum TileType
 	{
-	 	OPEN, WALL, START, TARGET
+	 	OPEN, START, TARGET
 	}
 	 	
 	public AStarGraph<TileType> twoDArrayToGraph(char[][] chars)
@@ -36,7 +36,7 @@ public class ArrayToGraph
 	 	TileType type = checkType(chars[y][x]);
 	 		
 	 	AStarTile<TileType> newTile;
-	 	if(type != null && type != TileType.WALL)
+	 	if(type != null)
 	 	{
 	 		newTile = new AStarTile<TileType>(x, y, type);
 	 		data[y][x] = newTile;
@@ -95,7 +95,7 @@ public class ArrayToGraph
 	 	case 'O':
 	 		return TileType.OPEN;
 	 	case 'W':
-	 		return TileType.WALL;
+	 		return null;
 	 	case 'S':
 	 		return TileType.START;
 	 	case 'T':

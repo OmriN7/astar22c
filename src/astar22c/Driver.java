@@ -51,7 +51,7 @@ public class Driver
 						System.out.print("ADDEDGE\tAdd an edge to the current graph. (creates vertex if it doesn't exist)\n");
 						System.out.print("       \tFORMAT: \"ADDEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
 						System.out.print("REMEDGE\t(Under development) Remove an edge from the current graph.\n");
-						System.out.print("       \tFORMAT: \"REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
+						System.out.print("       \tFORMAT: \"REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord}\"\n");
 						System.out.print("UNDOREM\t(Under development) Undo a previous REMEDGE command.\n");
 						System.out.print("DISPDFT\t(Under development) Display graph using Depth-First Traversel.\n");
 						System.out.print("DISPBST\t(Under development) Display graph using Breadth-First Traversel.\n");
@@ -115,11 +115,39 @@ public class Driver
 						}
 						break;
 						
+						case "remedge":
+							//FORMAT: REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord}
+							try
+							{
+								int vert0x = Integer.valueOf(st.nextToken());
+								int vert0y = Integer.valueOf(st.nextToken());
+								AStarTile vert0 = new AStarTile(vert0x, vert0y, TileType.OPEN);
+								
+								int vert1x = Integer.valueOf(st.nextToken());
+								int vert1y = Integer.valueOf(st.nextToken());
+								AStarTile vert1 = new AStarTile(vert1x, vert1y, TileType.OPEN);
+								
+								if(dataGraph.remove(vert0, vert1))
+								{
+									System.out.print("Edge removed succesfully");
+								}
+								else
+								{
+									System.out.print("Failed to remove the edge.\n");
+								}
+							}
+							catch(Exception e)
+							{
+								System.out.print("Command prams are invalid... Please follow this format:\n");
+								System.out.print("REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord}\n");
+							}
+							break;
+						
 					default:
 						fileScanner = openInputFile(userInput);
 						if(fileScanner == null)
 						{
-							System.out.print("File not found...\n\n");
+							System.out.print("File not found...\n");
 						}
 						else
 						{
@@ -149,7 +177,7 @@ public class Driver
 								try 
 								{
 									dataGraph.printToFile(new PrintWriter(file));
-									System.out.print("Sucessfully created: " + filename);
+									System.out.print("Created: " + filename + "\n");
 								} 
 								catch (FileNotFoundException e) 
 								{
@@ -163,7 +191,7 @@ public class Driver
 			}
 		}
 		//END OF PROGRAM
-	} // end main
+	} // Written by Omri & Fawzan
 	
 	
 	public static Scanner openInputFile(String filename) 
@@ -238,117 +266,6 @@ public class Driver
 	    ArrayToGraph arrayToGraphConstructor = new ArrayToGraph();
 	    return arrayToGraphConstructor.twoDArrayToGraph(charArr);
 	}
-	/*
-		
-	 // Loop based AStarGraph construction, replaced with recursion based method above	
-	
-		AStarTile dataArray[][] = new AStarTile[rowSize][colSize];
-		char curChar;
-		
-		//index0 - x
-		//index1 - y
-		int startingVertexCoord[] = new int[2];
-		int targetVertexCoord[] = new int[2];
-		
-		
-		//Populate data array
-	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
-	    {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
-	    	{
-	    		curChar = dataString.charAt((rowCnt*(rowSize+2))+colCnt);
-	    		if(curChar != 'W') //If the char isn't a wall vertex
-	    		{
-	    			//Mark the key of the vertex
-	    			dataArray[rowCnt][colCnt] = new AStarTile(colCnt, rowCnt);
-	    			
-	    			//Keeps track of the coordinates of the start and target vertex
-	    			if(curChar == 'S')
-	    			{
-	    				startingVertexCoord[0] = rowCnt;// x coord
-	    				startingVertexCoord[1] = colCnt;// y coord
-	    			}
-	    			if(curChar == 'T')
-	    			{
-	    				targetVertexCoord[0] = rowCnt;// x coord
-	    				targetVertexCoord[1] = colCnt;// y coord
-	    			}
-	    		}
-	    		else
-	    		{
-	    			dataArray[rowCnt][colCnt] = null;
-	    		}
-	    	}
-	    }
-	    
-	    
-	    
-	    AStarGraph g = new AStarGraph();
-	    Vertex<AStarTile>[][] vertexRefernces = new Vertex[rowSize][colSize];
-	    
-	    //Loop through the array of AStarTiles and created the verticies
-	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
-	    {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
-	    	{
-	    		if(dataArray[rowCnt][colCnt] != null)//  If it's not a wall
-	    		{
-	    			vertexRefernces[rowCnt][colCnt] = g.addToVertexSet(dataArray[rowCnt][colCnt]);// Create a vertex!
-	    		}
-	    		else
-	    		{
-	    			vertexRefernces[rowCnt][colCnt] = null;
-	    		}
-	    	}
-	    }
-	    
-	    //Set start and target nodes
-	    g.setStartingPointVertex(vertexRefernces[startingVertexCoord[0]][startingVertexCoord[1]]);
-	    g.setTargetVertex(vertexRefernces[targetVertexCoord[0]][targetVertexCoord[1]]);
-	    
-	    
-	    
-	    
-	    for(int rowCnt = 0; rowCnt < rowSize; rowCnt++)
-	    {
-	    	for(int colCnt = 0; colCnt < colSize; colCnt++)
-	    	{
-	    		//Horizontal and vertical edges
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt, 1);
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt, 1);
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt-1, 1);
-	    		connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt, colCnt+1, 1);
-	    		
-	    		//Diagonal edges
-	    		//connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt-1, Math.sqrt(2));
-	    		//connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt-1, Math.sqrt(2));
-	    		//connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt-1, colCnt+1, Math.sqrt(2));
-	    		//connectVerticies(vertexRefernces, rowCnt, colCnt, rowCnt+1, colCnt+1, Math.sqrt(2));
-	    	}
-	    }
-	    
-	    return g; //Return to main! 
-	}
-}
-
-public static void connectVerticies(Vertex vertexRefernces[][], int vert0x, int vert0y, int vert1x, int vert1y, double weight)
-{
-	try
-	{
-		if(vertexRefernces[vert0x][vert0y] == null || vertexRefernces[vert1x][vert1y] == null)
-		{
-			return;
-		}
-		else
-		{
-			vertexRefernces[vert0x][vert0y].addToAdjList(vertexRefernces[vert1x][vert1y], weight);
-		}
-	}
-	catch (IndexOutOfBoundsException e)
-	{
-	     //Do nothing.
-	}
-	*/
 }
 
 

@@ -255,11 +255,6 @@ public class Graph<E>
 	   }
    }// Written by Yang
    
-   
-// WRITE THE INSTANCE METHOD HERE TO
-   //         WRITE THE GRAPH's vertices and its
-   //         adjacency list TO A TEXT FILE (SUGGEST TO PASS AN
-   //        ALREADY OPEN PrintWriter TO THIS) !
    public void printToFile(PrintWriter prtWriter)
    {
 	   Iterator<Entry<E, Vertex<E>>> iter;

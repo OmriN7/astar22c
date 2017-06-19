@@ -47,9 +47,9 @@ public class Driver
 						System.out.print("EXIT   \tTerminate this program.\n");
 						System.out.print("ADDEDGE\tAdd an edge to the current graph. (creates vertex if it doesn't exist)\n");
 						System.out.print("       \tFORMAT: \"ADDEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
-						System.out.print("REMEDGE\t(Under development) Remove an edge from the current graph.\n");
+						System.out.print("REMEDGE\tRemove an edge from the current graph.\n");
 						System.out.print("       \tFORMAT: \"REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord}\"\n");
-						System.out.print("UNDOREM\t(Under development) Undo a previous REMEDGE command.\n");
+						System.out.print("UNDOREM\tUndo a previous REMEDGE command.\n");
 						System.out.print("DISPDFT\t(Under development) Display graph using Depth-First Traversel.\n");
 						System.out.print("DISPBST\t(Under development) Display graph using Breadth-First Traversel.\n");
 						System.out.print("DISPAL \tDisplay graph using Adjacency list.\n");
@@ -126,7 +126,7 @@ public class Driver
 								
 								if(dataGraph.remove(vert0, vert1))
 								{
-									System.out.print("Edge removed succesfully");
+									System.out.print("Edge removed succesfully.\n");
 								}
 								else
 								{
@@ -139,7 +139,19 @@ public class Driver
 								System.out.print("REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord}\n");
 							}
 							break;
-						
+							
+						case "undorem":
+							if(dataGraph.undoRemoval())
+							{
+								System.out.print("Sucessfuly undone removal.\n");
+							}
+							else
+							{
+								System.out.print("Nothing to undo.\n");
+							}
+							break;
+							
+							
 					default:
 						fileScanner = openInputFile(userInput);
 						if(fileScanner == null)
@@ -208,9 +220,6 @@ public class Driver
 		return scanner;
 	} // end openInputFile
 
-
-	//FOR LATER -- Move this to AStarGraph and try to split up the 4 phases into 4 different methods... 
-	//Omri, Fawzan and Vaughn
 	public static AStarGraph<TileType> fileToGraph(Scanner fileScanner)
 	{
 		String nextLine = fileScanner.nextLine();
@@ -262,7 +271,7 @@ public class Driver
 		
 	    ArrayToGraph arrayToGraphConstructor = new ArrayToGraph();
 	    return arrayToGraphConstructor.twoDArrayToGraph(charArr);
-	}
+	} // Written by Omri & Vaughn
 }
 
 

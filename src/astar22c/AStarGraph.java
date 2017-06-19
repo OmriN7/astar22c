@@ -110,6 +110,12 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	        lowestScore = Double.MAX_VALUE;
 		}
         
+        //Empty the path
+        while(!path.isEmpty())
+        {
+        	path.pop();
+        }
+        
         //Step back
         path.push(shortestPair);
         while(curVertex != startVertex)
@@ -142,8 +148,7 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	        path.push(shortestPair);
 	        lowestScore = Double.MAX_VALUE;
         }
-        
-	}
+	}// Written by Omri
 	
 	public String graphToTableString()
 	{
@@ -235,13 +240,20 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 		return result;
 	}// Written by Yang
 	
-	public void undoRemoval()
+	public boolean undoRemoval()
 	{
-		Pair<AStarTile<E>,AStarTile<E>> removedEdgePair = removedEdgePairs.pop();
-		
-		// the cost has to be constant now
-		super.addEdge(removedEdgePair.first, removedEdgePair.second, 1.0);
+		if(!removedEdgePairs.isEmpty())
+		{
+			Pair<AStarTile<E>,AStarTile<E>> removedEdgePair = removedEdgePairs.pop();
 			
-	}// Written by Yang
-	
+			// the cost has to be constant now
+			super.addEdge(removedEdgePair.first, removedEdgePair.second, 1.0);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+			
+	}// Written by Yang & Omri
 }

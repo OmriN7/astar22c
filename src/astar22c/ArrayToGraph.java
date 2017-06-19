@@ -28,21 +28,26 @@ public class ArrayToGraph
 	private AStarTile<TileType> connectTile(char[][] chars, AStarGraph<TileType> graph, 
 			 AStarTile<TileType>[][] data, int x, int y)
 	 {
+		//Check that the data isn't outside of the table we've defined
 	 	if(x<0 || x>=chars[0].length || y<0 || y>=chars.length)
 	 		return null;
 	 	if(data[y][x] != null)
 	 		return data[y][x];
 	 	
+	 	
 	 	TileType type = checkType(chars[y][x]);
-	 		
 	 	AStarTile<TileType> newTile;
-	 	if(type != null)
+	 	
+	 	if(type != null) //If the tile isn't a wall
 	 	{
+	 		//Create a vertex
 	 		newTile = new AStarTile<TileType>(x, y, type);
 	 		data[y][x] = newTile;
 	 	}
-	 	else
+	 	else //Otherwise do nothing
+	 	{
 	 		return null;
+	 	}
 	 	
 	 	if(type == TileType.START)
 	 		graph.setStartingPointVertex(newTile);

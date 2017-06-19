@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import astar22c.ArrayToGraph.TileType;
 
@@ -20,6 +21,9 @@ public class Driver
 	public static void main(String[] args)
 	{
 		String userInput = ""; //String to hold user input
+		String command = "";
+		StringTokenizer st;
+		
 		Scanner fileScanner; //Scanner to scan through the input file
 		char dataArray[][];
 		AStarGraph<TileType> dataGraph = null;
@@ -30,101 +34,132 @@ public class Driver
 		
 		while(!userInput.equals("exit"))
 		{
-			userInput = userScanner.nextLine().toLowerCase();
-			switch(userInput)
+			System.out.print("> ");
+			userInput = userScanner.nextLine().toLowerCase().trim();
+			st = new StringTokenizer(userInput," ");
+			
+			if(st.hasMoreTokens())
 			{
-				case "help":
-					//FAWZAN & OMRI
-					System.out.print("\n");
-					System.out.print("HELP   \tProvides Help information for commands.\n");
-					System.out.print("EXIT   \tTerminate this program.\n");
-					System.out.print("ADDEDGE\t(Under development) Add an edge to the current graph.\n");
-					System.out.print("       \tFORMAT: \"ADDEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
-					System.out.print("REMEDGE\t(Under development) Remove an edge from the current graph.\n");
-					System.out.print("       \tFORMAT: \"REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
-					System.out.print("UNDOREM\t(Under development) Undo a previous REMEDGE command.\n");
-					System.out.print("DISPDFT\t(Under development) Display graph using Depth-First Traversel.\n");
-					System.out.print("DISPBST\t(Under development) Display graph using Breadth-First Traversel.\n");
-					System.out.print("DISPAL \tDisplay graph using Adjacency list.\n");
-					//System.out.print("FPATH  \t(Under development) Find the shortest path using A*.\n"); add this later!
-					//System.out.print("DISPT  \t(Under development) Display the graph as a table.\n"); add this later!
-					System.out.print("\n");
-					System.out.print("Any input that isn't a command would be considered as a filename that the program would try to open.\n");
-					System.out.print("Programs should be formatted as follows:\n");
-					System.out.print("1. Use ONLY the following characters:\n");
-					System.out.print("\t'O' - \"Open\" is for open verticies.\n");
-					System.out.print("\t'W' - \"Wall\"Open tiles.\n");
-					System.out.print("\t'S' - \"Start\" is for open verticies that are the end location of the path. Should only contain one of these characters.\n");
-					System.out.print("\t'T' - \"Target\" is for open verticies that are the starting location of the path. Should only contain one of these characters.\n");
-					System.out.print("2. Every line needs to have the same amount of characters. For example...\n");
-					System.out.print("\tWOOOOWW\n");
-					System.out.print("\tOOOWOOW\n");
-					System.out.print("\tOSOWOTO\n");
-					System.out.print("\tWOOWOOO\n");
-					System.out.print("\tWOOOOOW\n");
-					System.out.print("\n");
-					System.out.print("\n");
-					break; 
-
-				case "exit":
-					System.out.print("Exiting program...\n");
-					break; 
-					
-				case "dispal":
-					if(dataGraph != null)
-					{
-						dataGraph.showAdjTable();
-					}
-					else
-					{
-						System.out.print("No graph in memory!\n");
-					}
-					break; 
-				
-				default:
-					fileScanner = openInputFile(userInput);
-					if(fileScanner == null)
-					{
-						System.out.print("File not found...\n\n");
-					}
-					else
-					{
+				command = st.nextToken();
+				switch(command)
+				{
+					case "help":
+						//FAWZAN & OMRI
 						System.out.print("\n");
-						dataGraph = fileToGraph(fileScanner);
-
+						System.out.print("HELP   \tProvides Help information for commands.\n");
+						System.out.print("EXIT   \tTerminate this program.\n");
+						System.out.print("ADDEDGE\tAdd an edge to the current graph. (creates vertex if it doesn't exist)\n");
+						System.out.print("       \tFORMAT: \"ADDEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
+						System.out.print("REMEDGE\t(Under development) Remove an edge from the current graph.\n");
+						System.out.print("       \tFORMAT: \"REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\"\n");
+						System.out.print("UNDOREM\t(Under development) Undo a previous REMEDGE command.\n");
+						System.out.print("DISPDFT\t(Under development) Display graph using Depth-First Traversel.\n");
+						System.out.print("DISPBST\t(Under development) Display graph using Breadth-First Traversel.\n");
+						System.out.print("DISPAL \tDisplay graph using Adjacency list.\n");
+						//System.out.print("FPATH  \t(Under development) Find the shortest path using A*.\n"); add this later!
+						//System.out.print("DISPT  \t(Under development) Display the graph as a table.\n"); add this later!
+						System.out.print("\n");
+						System.out.print("Any input that isn't a command would be considered as a filename that the program would try to open.\n");
+						System.out.print("Programs should be formatted as follows:\n");
+						System.out.print("1. Use ONLY the following characters:\n");
+						System.out.print("\t'O' - \"Open\" is for open verticies.\n");
+						System.out.print("\t'W' - \"Wall\"Open tiles.\n");
+						System.out.print("\t'S' - \"Start\" is for open verticies that are the end location of the path. Should only contain one of these characters.\n");
+						System.out.print("\t'T' - \"Target\" is for open verticies that are the starting location of the path. Should only contain one of these characters.\n");
+						System.out.print("2. Every line needs to have the same amount of characters. For example...\n");
+						System.out.print("\tWOOOOWW\n");
+						System.out.print("\tOOOWOOW\n");
+						System.out.print("\tOSOWOTO\n");
+						System.out.print("\tWOOWOOO\n");
+						System.out.print("\tWOOOOOW\n");
+						System.out.print("\n");
+						System.out.print("\n");
+						break;
+	
+					case "exit":
+						System.out.print("Exiting program...\n");
+						break; 
+					
+	
+					case "dispal":
 						if(dataGraph != null)
 						{
-							System.out.print("Graph recieved:\n");
+							dataGraph.showAdjTable();
+						}
+						else
+						{
+							System.out.print("No graph in memory!\n");
+						}
+						break; 
+					
+					case "addedge":
+						//FORMAT: ADDEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}
+						try
+						{
+							int vert0x = Integer.valueOf(st.nextToken());
+							int vert0y = Integer.valueOf(st.nextToken());
+							AStarTile vert0 = new AStarTile(vert0x, vert0y, TileType.OPEN);
+							
+							int vert1x = Integer.valueOf(st.nextToken());
+							int vert1y = Integer.valueOf(st.nextToken());
+							AStarTile vert1 = new AStarTile(vert1x, vert1y, TileType.OPEN);
+							
+							double weight = Double.valueOf(st.nextToken());
+							
+							dataGraph.addEdge(vert0, vert1, weight);
+						}
+						catch(Exception e)
+						{
+							System.out.print("Command prams are invalid... Please follow this format:\n");
+							System.out.print("ADDEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord} {weight}\n");
+						}
+						break;
+						
+					default:
+						fileScanner = openInputFile(userInput);
+						if(fileScanner == null)
+						{
+							System.out.print("File not found...\n\n");
+						}
+						else
+						{
 							System.out.print("\n");
-							System.out.print(dataGraph.graphToTableString());
-							System.out.print("\n");
-							
-							dataGraph.findShortestPath();
-							
-							System.out.print("Solved Graph:\n");
-							System.out.print("\n");
-							System.out.print(dataGraph.graphToTableString());
-							
-
-							System.out.print("Please give me a filename for the output file: ");
-							userInput = userScanner.nextLine();
-							
-							String filename = System.getProperty("user.dir") + "\\" + userInput;
-							File file = new File(filename);
-							
-							try 
+							dataGraph = fileToGraph(fileScanner);
+	
+							if(dataGraph != null)
 							{
-								dataGraph.printToFile(new PrintWriter(file));
-								System.out.print("Sucessfully created: " + filename);
-							} 
-							catch (FileNotFoundException e) 
-							{
-								System.out.print("Failed to create the output file...");
-								e.printStackTrace();
+								System.out.print("Graph recieved:\n");
+								System.out.print("\n");
+								System.out.print(dataGraph.graphToTableString());
+								System.out.print("\n");
+								
+								dataGraph.findShortestPath();
+								
+								System.out.print("Solved Graph:\n");
+								System.out.print("\n");
+								System.out.print(dataGraph.graphToTableString());
+								
+	
+								System.out.print("Please give me a filename for the output file: ");
+								userInput = userScanner.nextLine();
+								
+								String filename = System.getProperty("user.dir") + "\\" + userInput + ".txt";
+								File file = new File(filename);
+								
+								try 
+								{
+									dataGraph.printToFile(new PrintWriter(file));
+									System.out.print("Sucessfully created: " + filename);
+								} 
+								catch (FileNotFoundException e) 
+								{
+									System.out.print("Failed to create the output file...");
+									e.printStackTrace();
+								}
 							}
 						}
-					}
-					break;
+						break;
+				}
 			}
 		}
 		//END OF PROGRAM

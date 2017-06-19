@@ -287,3 +287,13 @@ public class Graph<E>
 
 
 }
+
+/*
+public class VertexVisitor<E> implements Visitor<Vertex<E>> {
+
+	@Override
+	public void visit(Vertex<E> v) {
+		// TODO Auto-generated method stub
+		System.out.println(v.getData());
+	}
+*/

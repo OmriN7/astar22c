@@ -3,10 +3,7 @@ package astar22c;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import astar22c.ArrayToGraph.TileType;
@@ -98,11 +95,11 @@ public class Driver
 						{
 							int vert0x = Integer.valueOf(st.nextToken());
 							int vert0y = Integer.valueOf(st.nextToken());
-							AStarTile vert0 = new AStarTile(vert0x, vert0y, TileType.OPEN);
+							AStarTile<TileType> vert0 = new AStarTile<>(vert0x, vert0y, TileType.OPEN);
 							
 							int vert1x = Integer.valueOf(st.nextToken());
 							int vert1y = Integer.valueOf(st.nextToken());
-							AStarTile vert1 = new AStarTile(vert1x, vert1y, TileType.OPEN);
+							AStarTile<TileType> vert1 = new AStarTile<>(vert1x, vert1y, TileType.OPEN);
 							
 							double weight = Double.valueOf(st.nextToken());
 							
@@ -121,11 +118,11 @@ public class Driver
 							{
 								int vert0x = Integer.valueOf(st.nextToken());
 								int vert0y = Integer.valueOf(st.nextToken());
-								AStarTile vert0 = new AStarTile(vert0x, vert0y, TileType.OPEN);
+								AStarTile<TileType> vert0 = new AStarTile<>(vert0x, vert0y, TileType.OPEN);
 								
 								int vert1x = Integer.valueOf(st.nextToken());
 								int vert1y = Integer.valueOf(st.nextToken());
-								AStarTile vert1 = new AStarTile(vert1x, vert1y, TileType.OPEN);
+								AStarTile<TileType> vert1 = new AStarTile<>(vert1x, vert1y, TileType.OPEN);
 								
 								if(dataGraph.remove(vert0, vert1))
 								{

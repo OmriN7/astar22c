@@ -31,6 +31,7 @@ public class ArrayToGraph
 		//Check that the data isn't outside of the table we've defined
 	 	if(x<0 || x>=chars[0].length || y<0 || y>=chars.length)
 	 		return null;
+	 	//if the AStarTile exist, return this tile
 	 	if(data[y][x] != null)
 	 		return data[y][x];
 	 	
@@ -40,7 +41,7 @@ public class ArrayToGraph
 	 	
 	 	if(type != null) //If the tile isn't a wall
 	 	{
-	 		//Create a vertex
+	 		//Create a AStarTile
 	 		newTile = new AStarTile<TileType>(x, y, type);
 	 		data[y][x] = newTile;
 	 	}
@@ -110,32 +111,4 @@ public class ArrayToGraph
 	 	}
 	}
 	 
-	 	
-//	 public static class AStarTile
-//	 {
-//	 	public TileType type;
-//		public int x, y;
-//	 		
-//	 	public TileData(TileType t, int x, int y)
-//	 	{
-//	 		type = t;
-//	 		this.x = x;
-//	 		this.y = y;
-//	 	}
-//	 	
-//	 	public String toString()
-//	 	{
-//	 		switch(type)
-//	 		{
-//	 		case OPEN:
-//	 			return "OPEN["+x+","+y+"]";
-//	 		case START:
-//	 			return "START["+x+","+y+"]";
-//	 		case TARGET:
-//	 			return "TARGET["+x+","+y+"]";
-//	 		default:
-//	 			return null;
-//	 		}
-//	 	}
-//	 }
 }

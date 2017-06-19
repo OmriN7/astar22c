@@ -27,6 +27,31 @@ public class AStarTile<E>
 	@Override
 	public String toString() 
 	{
-		return "AStarTile [x=" + x + ", y=" + y + "]";
+		return data + "[x=" + x + ", y=" + y + "]";
 	}
+	
+	public boolean equals(Object anObject)
+	{
+        if (this == anObject)
+        {
+            return true;
+        }
+        if (anObject instanceof AStarTile<?>)
+        {
+        	AStarTile<E> anotherTile = (AStarTile<E>)anObject;
+    		
+    		return x == anotherTile.x &&
+    				y == anotherTile.y &&
+    				data == anotherTile.data;
+        }
+        return false;
+    }//Yang
+	
+	//Override a hashCode method so the Graph.vertexSet knows how to hash AStarTile
+    public int hashCode()
+    {
+        int h = ((int)(x) & 0xffff) | ((int)(y) << 16);
+        return h;
+    }//Yang
+    
 } // Written by Omri & Yang

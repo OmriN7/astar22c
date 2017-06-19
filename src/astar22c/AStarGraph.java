@@ -12,7 +12,7 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	private AStarTile<E> startingPointVertex = null;
 	private AStarTile<E> targetVertex = null;
 	private LinkedStack<Pair<Vertex<AStarTile<E>>, Double>> path = null;
-	private LinkedStack<Pair<AStarTile<E>,AStarTile<E>>> removedEdgePairs = null;
+	private LinkedStack<Pair<AStarTile<E>,AStarTile<E>>> removedEdgePairs = new LinkedStack<>();
 
 	//Default constructor
 	public AStarGraph()

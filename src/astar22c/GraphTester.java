@@ -49,6 +49,10 @@ public class GraphTester
 	      
 	      newGraph.showAdjTable();
 	      
+	      newGraph.undoRemoval();
+	      
+	      newGraph.showAdjTable();
+	      
 
 
 	   }

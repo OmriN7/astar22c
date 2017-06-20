@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
+
 interface Visitor<T>
 {
     public void visit(T obj);

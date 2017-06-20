@@ -23,8 +23,7 @@ public class Driver
 		
 		Scanner fileScanner; //Scanner to scan through the input file
 		char dataArray[][];
-		AStarGraph<TileType> dataGraph = null;
-
+		AStarGraph<TileType> dataGraph = new AStarGraph<>();
 		System.out.print("Welcome to the pathfinding program!\n");
 		System.out.print("Type \"help\" for help\n");
 		System.out.print("Please enter a filename...\n");
@@ -104,6 +103,7 @@ public class Driver
 							double weight = Double.valueOf(st.nextToken());
 							
 							dataGraph.addEdge(vert0, vert1, weight);
+							System.out.print("Successfully added the edge!\n");
 						}
 						catch(Exception e)
 						{
@@ -292,7 +292,20 @@ public class Driver
 		}
 		
 	    ArrayToGraph arrayToGraphConstructor = new ArrayToGraph();
-	    return arrayToGraphConstructor.twoDArrayToGraph(charArr);
+	    AStarGraph<TileType> returnValue = arrayToGraphConstructor.twoDArrayToGraph(charArr);
+	    
+	    if(returnValue.getStartingPointVertex() == null)
+	    {
+	    	System.out.print("The graph you gave doesn't have a starting point!\n");
+	    	return null;
+	    }
+	    if(returnValue.getTargetVertex() == null)
+	    {
+	    	System.out.print("The graph you gave doesn't have a target point!\n");
+	    	return null;
+	    }
+	    
+	    return returnValue;
 	} // Written by Omri & Vaughn
 }
 

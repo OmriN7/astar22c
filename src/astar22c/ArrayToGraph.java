@@ -72,24 +72,24 @@ public class ArrayToGraph
 	 	if(tempData != null)
 	 		graph.addEdge(newTile, tempData, 1.0);
 	 	
-//connection with diagonal tiles, commented out for now
-	 	
-//	 	tempData = connectTile(chars, graph, data,x+1, y+1);
-//	 	if(tempData != null)
-//	 		graph.addEdge(newTile, tempData, Math.sqrt(2));
-//	 		
-//	 	tempData = connectTile(chars, graph, data,x-1, y-1);
-//	 	if(tempData != null)
-//	 		graph.addEdge(newTile, tempData, Math.sqrt(2));
-//	 		
-//	 	tempData = connectTile(chars, graph, data,x-1, y+1);
-//	 	if(tempData != null)
-//			graph.addEdge(newTile, tempData, Math.sqrt(2));
-//	 		
-//	 	tempData = connectTile(chars, graph, data,x+1, y-1);
-//	 	if(tempData != null)
-//	 		graph.addEdge(newTile, tempData, Math.sqrt(2));
-	 	
+	 	//connection with diagonal tiles, commented out for now
+	 	/*
+	 	tempData = connectTile(chars, graph, data,x+1, y+1);
+	 	if(tempData != null)
+	 		graph.addEdge(newTile, tempData, Math.sqrt(2));
+	 		
+	 	tempData = connectTile(chars, graph, data,x-1, y-1);
+	 	if(tempData != null)
+	 		graph.addEdge(newTile, tempData, Math.sqrt(2));
+	 		
+	 	tempData = connectTile(chars, graph, data,x-1, y+1);
+	 	if(tempData != null)
+			graph.addEdge(newTile, tempData, Math.sqrt(2));
+	 		
+	 	tempData = connectTile(chars, graph, data,x+1, y-1);
+	 	if(tempData != null)
+	 		graph.addEdge(newTile, tempData, Math.sqrt(2));
+		*/
 	 			
 	 	return newTile;	
 	 }

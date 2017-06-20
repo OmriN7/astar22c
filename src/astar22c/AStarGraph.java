@@ -110,7 +110,8 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	        }
 	        lowestScore = Double.MAX_VALUE;
 		}
-        
+
+        /*
         //Empty the path
         while(!path.isEmpty())
         {
@@ -143,12 +144,20 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 		        	}
 	        	}
 	        }
-
-	        curVertex.unvisit();
-	        curVertex = shortestPair.first;
-	        path.push(shortestPair);
+	        //Check for dead-end
+	        if(curVertex == shortestPair.first)
+	        {
+	        	curVertex = path.pop().first;
+	        }
+	        else
+	        {
+		        curVertex.unvisit();
+		        curVertex = shortestPair.first;
+		        path.push(shortestPair);
+	        }
 	        lowestScore = Double.MAX_VALUE;
-        }
+	        
+        }*/
 	}// Written by Omri
 	
 	public String graphToTableString()

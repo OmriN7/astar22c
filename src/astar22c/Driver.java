@@ -50,8 +50,8 @@ public class Driver
 						System.out.print("REMEDGE\tRemove an edge from the current graph.\n");
 						System.out.print("       \tFORMAT: \"REMEDGE {vert0 x-coord} {vert0 y-coord} {vert1 x-coord} {vert1 y-coord}\"\n");
 						System.out.print("UNDOREM\tUndo a previous REMEDGE command.\n");
-						System.out.print("DISPDFT\t(Under development) Display graph using Depth-First Traversel.\n");
-						System.out.print("DISPBST\t(Under development) Display graph using Breadth-First Traversel.\n");
+						System.out.print("DISPDFT\tDisplay graph using Depth-First Traversel.\n");
+						System.out.print("DISPBFT\tDisplay graph using Breadth-First Traversel.\n");
 						System.out.print("DISPAL \tDisplay graph using Adjacency list.\n");
 						//System.out.print("FPATH  \t(Under development) Find the shortest path using A*.\n"); add this later!
 						//System.out.print("DISPT  \t(Under development) Display the graph as a table.\n"); add this later!
@@ -148,6 +148,28 @@ public class Driver
 							else
 							{
 								System.out.print("Nothing to undo.\n");
+							}
+							break;
+							
+						case "dispdft":
+							if(dataGraph != null)
+							{
+								dataGraph.depthFirstTraversal(dataGraph.getStartingPointVertex(), new VertexVisitor<AStarTile<TileType>>());
+							}
+							else
+							{
+								System.out.print("No graph in memory!\n");
+							}
+							break;
+							
+						case "disbft":
+							if(dataGraph != null)
+							{
+								dataGraph.depthFirstTraversal(dataGraph.getStartingPointVertex(), new VertexVisitor<AStarTile<TileType>>());
+							}
+							else
+							{
+								System.out.print("No graph in memory!\n");
 							}
 							break;
 							

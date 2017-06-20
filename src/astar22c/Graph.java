@@ -9,6 +9,13 @@ interface Visitor<T>
     public void visit(T obj);
 }
 
+class VertexVisitor<T> implements Visitor<T> 
+{
+	public void visit(T obj)
+	{
+		System.out.print(obj + "\n");
+	}
+}
 // --- assumes definition of simple class Pair<E, F>
 
 // --- Vertex class ------------------------------------------------------
@@ -208,8 +215,7 @@ public class Graph<E>
 	   depthFirstTraversalHelper( startVertex, visitor );
    }
 
-   protected void breadthFirstTraversalHelper(Vertex<E> startVertex,
-		   Visitor<E> visitor)
+   protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor)
    {
 	   LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
 	   E startData = startVertex.getData();
@@ -284,16 +290,5 @@ public class Graph<E>
 	   prtWriter.println();
 	   prtWriter.close();  
    }// written by Yang
-
-
 }
 
-/*
-public class VertexVisitor<E> implements Visitor<Vertex<E>> {
-
-	@Override
-	public void visit(Vertex<E> v) {
-		// TODO Auto-generated method stub
-		System.out.println(v.getData());
-	}
-*/

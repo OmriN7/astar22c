@@ -52,8 +52,7 @@ public class Driver
 						System.out.print("DISPDFT\tDisplay graph using Depth-First Traversel.\n");
 						System.out.print("DISPBFT\tDisplay graph using Breadth-First Traversel.\n");
 						System.out.print("DISPAL \tDisplay graph using Adjacency list.\n");
-						//System.out.print("FPATH  \t(Under development) Find the shortest path using A*.\n"); add this later!
-						//System.out.print("DISPT  \t(Under development) Display the graph as a table.\n"); add this later!
+						System.out.print("FPATH  \tFind the shortest path using A*.\n");
 						System.out.print("\n");
 						System.out.print("Any input that isn't a command would be considered as a filename that the program would try to open.\n");
 						System.out.print("Programs should be formatted as follows:\n");
@@ -162,7 +161,7 @@ public class Driver
 							}
 							break;
 							
-						case "disbft":
+						case "dispbft":
 							if(dataGraph != null)
 							{
 								dataGraph.depthFirstTraversal(dataGraph.getStartingPointVertex(), new VertexVisitor<AStarTile<TileType>>());
@@ -174,50 +173,73 @@ public class Driver
 							break;
 							
 							
-					default:
-						fileScanner = openInputFile(userInput);
-						if(fileScanner == null)
-						{
-							System.out.print("File not found...\n");
-						}
-						else
-						{
-							System.out.print("\n");
-							dataGraph = fileToGraph(fileScanner);
-	
+						case "fpath":
 							if(dataGraph != null)
 							{
-								System.out.print("Graph recieved:\n");
-								System.out.print("\n");
-								System.out.print(dataGraph.graphToTableString());
-								System.out.print("\n");
-								
 								dataGraph.findShortestPath();
-								
-								System.out.print("Solved Graph:\n");
-								System.out.print("\n");
 								System.out.print(dataGraph.graphToTableString());
-								
-	
-								System.out.print("Please give me a filename for the output file: ");
-								userInput = userScanner.nextLine();
-								
-								String filename = System.getProperty("user.dir") + "\\" + userInput + ".txt";
-								File file = new File(filename);
-								
-								try 
+							}
+							else
+							{
+								System.out.print("No graph in memory!\n");
+							}
+							break;
+							
+							
+						default:
+							fileScanner = openInputFile(userInput);
+							if(fileScanner == null)
+							{
+								System.out.print("File not found...\n");
+							}
+							else
+							{
+								System.out.print("\n");
+								dataGraph = fileToGraph(fileScanner);
+		
+								if(dataGraph != null)
 								{
-									dataGraph.printToFile(new PrintWriter(file));
-									System.out.print("Created: " + filename + "\n");
-								} 
-								catch (FileNotFoundException e) 
-								{
-									System.out.print("Failed to create the output file...");
-									e.printStackTrace();
+									System.out.print("Graph recieved:\n");
+									System.out.print("\n");
+									System.out.print(dataGraph.graphToTableString());
+									System.out.print("\n");
+									
+									dataGraph.findShortestPath();
+									
+									System.out.print("Solved Graph:\n");
+									System.out.print("\n");
+									System.out.print(dataGraph.graphToTableString());
+									
+		
+									System.out.print("Please give me a filename for the output file: ");
+									userInput = userScanner.nextLine();
+									
+									
+									String filename = "";
+									if(System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) // Mac
+									{
+										filename = System.getProperty("user.dir") + "/" + userInput + ".txt";
+									}
+									else if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) // Windows
+									{
+										filename = System.getProperty("user.dir") + "\\" + userInput + ".txt";
+									}
+									
+									File file = new File(filename);
+									
+									try 
+									{
+										dataGraph.printToFile(new PrintWriter(file));
+										System.out.print("Created: " + filename + "\n");
+									} 
+									catch (FileNotFoundException e) 
+									{
+										System.out.print("Failed to create the output file...");
+										e.printStackTrace();
+									}
 								}
 							}
-						}
-						break;
+							break;
 				}
 			}
 		}

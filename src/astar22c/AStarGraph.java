@@ -111,7 +111,6 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	        lowestScore = Double.MAX_VALUE;
 		}
 
-        /*
         //Empty the path
         while(!path.isEmpty())
         {
@@ -157,7 +156,7 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	        }
 	        lowestScore = Double.MAX_VALUE;
 	        
-        }*/
+        }
 	}// Written by Omri
 	
 	public String graphToTableString()

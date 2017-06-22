@@ -100,7 +100,15 @@ public class AStarGraph<E> extends Graph<AStarTile<E>>
 	        //Check for dead-end
 	        if(curVertex == shortestPair.first)
 	        {
-	        	curVertex = path.pop().first;
+	        	if(!path.isEmpty())
+	        	{
+	        		curVertex = path.pop().first;
+	        	}
+	        	else
+	        	{
+	        		System.out.print("The graph does not have a path from the start to the target.\n");
+	        		return;
+	        	}
 	        }
 	        else
 	        {

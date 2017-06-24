@@ -53,7 +53,8 @@ public class Driver
 						System.out.print("DISPBFT\tDisplay graph using Breadth-First Traversel.\n");
 						System.out.print("DISPAL \tDisplay graph using Adjacency list.\n");
 						System.out.print("FPATH  \tFind the shortest path using A*.\n");
-						System.out.print("SAVE   \tSave the graph using Adjacency list in your current working directory.\n");
+						System.out.print("SAVE   \tSave the graph using Adjacency list in your current working directory as a txt.\n");
+						System.out.print("       \tFORMAT: \"SAVE {filename}\"\n");
 						System.out.print("\n");
 						System.out.print("Any input that isn't a command would be considered as a filename that the program would try to open.\n");
 						System.out.print("Programs should be formatted as follows:\n");
@@ -189,8 +190,15 @@ public class Driver
 							
 						case "save":
 							if(dataGraph != null)
-							{									
-								toFile(st.nextToken(), dataGraph);
+							{
+								if(st.hasMoreTokens())
+								{
+									toFile(st.nextToken(), dataGraph);
+								}
+								else
+								{
+									System.out.print("Please enter a file name!\n");
+								}
 							}
 							else
 							{
